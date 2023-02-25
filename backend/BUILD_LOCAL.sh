@@ -1,5 +1,8 @@
 #!/bin/sh
 
+target=${1:-main}
+
 make clean
-make
+TARGET_EXEC=$target CXX=clang++ make -e
+#CXX=clang++ make -e
 
