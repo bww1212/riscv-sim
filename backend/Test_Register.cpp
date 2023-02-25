@@ -1,14 +1,15 @@
-#include Register.hpp
+#include "Register.hpp"
 
-void main(void) {
+int main(void) {
 	Register x[32];
 	x[1] = Register(32);
-	y = x[1];
-	printf("1: %lx", y());
+	Register y = x[1];
+	printf("1: %x", y());
 	y.setBit(3, 1);
-	printf("2: %lx", y());
-	y.setValue(32768);
-	printf("3: %lx", y());
-	printf("4: %lx", y(0, 7));
-	printf("5: %lx", y(7, 15));
+	printf("2: %x", y());
+	y.set(32768);
+	printf("3: %x", y());
+	printf("4: %x", y(0, 7));
+	printf("5: %x", y(7, 15));
+	return 0;
 }

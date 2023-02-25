@@ -9,9 +9,12 @@ class Register {
 	Register(int bits); // Valid range will be 0 to bits-1
 	~Register();
 	
+	// Set contents
+	void set(uint32_t value);
+	void setBit(uint8_t bit, uint8_t value);
 	// Send a register or part of a register to another
 	void send(Register o, int lsrc, int usrc, int tgt); // Source range (inclusive), destination start
-	void send(Register o) { send(o, 0, this.nbits, 0); }
+	void send(Register o) { send(o, 0, this->nbits, 0); }
 	// Access contents of this register
 	uint32_t operator()(int lower, int upper); // Range of bits, inclusive
 	uint8_t  operator()(int bit); // A single bit
@@ -20,6 +23,6 @@ class Register {
 	private:
 	int nbits;
 	uint8_t* data;
-}
+};
 
 #endif
