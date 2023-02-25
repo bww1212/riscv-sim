@@ -2,5 +2,7 @@
 #define __INCLUDES_H
 
 #include <cstdint>
+#include <stdlib.h>
+#include <stdexcept>
 
 #endif
