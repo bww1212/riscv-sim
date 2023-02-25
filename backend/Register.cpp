@@ -35,10 +35,10 @@ void Register::send(Register* o, int lsrc, int usrc, int tgt) {
 		throw runtime_error("Register send failed; starting index must be before ending index");
 	if ((usrc - lsrc) + tgt > o->nbits)
 		throw runtime_error("Register send failed: target register doesn't have enough bits");
-	uint32_t mask = 0xFFFFFFFFu << (this->nbits - usrc); // Shift out the upper bits
-	mask >>= (this->nbits - usrc) + lsrc; // Shift out the lower bits
-	mask <<= lsrc; // Bring it back to the right location
-	
+	uint32_t mask = 0;
+	for (int i = lsrc; i <= usrc; ++i) {
+		mask |= 1 << i;
+	}
 	o->data &= ~mask;
 	o->data |= (this->data & mask);
 }
@@ -46,10 +46,12 @@ void Register::send(Register* o, int lsrc, int usrc, int tgt) {
 uint32_t Register::operator()(int lower, int upper) {
 	if (lower < 0 || upper >= this->nbits)
 		throw runtime_error("Register read by bounds failed: invalid bounds");
-	uint32_t bits = this->data << (this->nbits - upper); // Shift out the upper bits
-	data >>= (this->nbits - upper) + lower; // Shift out the lower bits
-	// Leave as-is, in the lowermost bits
-	return data;
+	uint32_t mask = 0;
+	for (int i = lower; i <= upper; ++i) {
+		mask |= 1 << i;
+	}
+	uint32_t bits = this->data & mask;
+	return bits >> lower;
 }
 
 uint8_t Register::operator()(int bit) {
@@ -58,7 +60,7 @@ uint8_t Register::operator()(int bit) {
 	uint32_t this_bit = 1 << bit;
 	this_bit = this_bit & data;
 	this_bit >>= bit;
-	return this_bit;
+	return (uint8_t)this_bit;
 }
 
 uint32_t Register::operator()(void) {
