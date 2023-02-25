@@ -60,13 +60,13 @@ class FrontEndSim {
 
     executeTenInstructions() {
         for (i = 0; i < 10; i++) {
-            // Call the method to run one instruction
+            this.executeOneInstruction()
         }
     }
 
     playInstructions() {
         while (value) {
-            // Method to execute one instruction
+            this.executeOneInstruction()
             delay(delayTime);
         }
     }
