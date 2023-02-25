@@ -57,6 +57,7 @@
 
     executeOneInstruction = () => {
         // Call method to run one instruction
+        Module.cwrap('getInstructionStream', '0');
     }
 
     executeTenInstructions = () => {
