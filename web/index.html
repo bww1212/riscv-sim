@@ -3,27 +3,29 @@
     <head>
         <script src="FrontEndSim.js"></script>
         <link rel="stylesheet" href="style.css">
+        <title>RISC-V Simulation</title>
     </head>
     <body onload="setMemory()">
         <div id="topHalf">
-            <div id="registerView">
-
+            <div id="registerView" class="view">
+                <p id="registers"></p>
             </div>
-            <div id="asmView">
+            <div id="asmView" class="view">
                 <input id="fileUpload" type="file" name="fileupload"/>
                 <button id="uploadButton" onclick="uploadFile()">Upload</button>
+                <p id="instructions"></p>
             </div>
         </div>
         <div id="bottomHalf">
-            <div id="settingsAndButtons">
+            <div id="settingsAndButtons" class="view">
                 <div id="playButtons">
                     <button id="pauseButton" onclick="//pause()" class="controlButton"><img src="images/pauseButton.png"></button>
                     <button id="playButton" onclick="//play()" class="controlButton"><img src="images/playButton.png"></button>
                     <button id="forwardButton" onclick="//fastForward()" class="controlButton"><img src="images/fastForwardButton.png"></button>
                 </div>
             </div>
-            <div id="memoryView">
-
+            <div id="memoryView" class="view">
+                <p id="memory"></p>
             </div>
         </div>
     </body>
