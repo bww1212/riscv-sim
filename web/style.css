@@ -21,8 +21,9 @@ img {
     border: none;
 }
 .view {
-    border: rgb(18, 18, 18);
-    border-width: 5px;
+    border-color: rgb(18, 18, 18);
+    border-width: 10px;
+    border-radius: 5px;
     margin: 1%;
     padding: 1%;
     display: flex;

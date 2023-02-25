@@ -1,9 +1,9 @@
-class FrontEndSim {
+
     byteArrayFromObject;
     instructionCounter;
     delayTime;
 
-    uploadFile() {
+    uploadFile = () => {
         fileExtension = document.getElementById("fileUpload").split('.').pop();
         if (fileExtension != 'o') {
             window.alert("Please enter an object file.");
@@ -11,7 +11,7 @@ class FrontEndSim {
         }
     }
 
-    parseFile(file) {
+    parseFile = (file) => {
         return new Promise((resolve, reject) => {
             try {
                 var reader = new FileReader();
@@ -34,38 +34,38 @@ class FrontEndSim {
         })
     }
 
-    printRegisters() {
+    printRegisters = () => {
         for (i = 0; i < 32; i++) {
             // Print register i in a 4x8 grid
         }
     }
 
-    printInstructions() {
+    printInstructions = () => {
         // Print the instruction list
         // Call with an offset
         // If calling with 0, that will give the instruction being called, 1 will be the one after that and so on
         
     }
 
-    printMemoryView() {
+    printMemoryView = () => {
         // Print view of memory in a scroll box
     }
 
-    setMemorySize(sizeInBytes) {
+    setMemorySize = (sizeInBytes) => {
         // Call method to set memory size
     }
 
-    executeOneInstruction() {
+    executeOneInstruction = () => {
         // Call method to run one instruction
     }
 
-    executeTenInstructions() {
+    executeTenInstructions = () => {
         for (i = 0; i < 10; i++) {
             this.executeOneInstruction()
         }
     }
 
-    playInstructions() {
+    playInstructions = () => {
         value = true;
         while (value) {
             this.executeOneInstruction()
@@ -73,11 +73,10 @@ class FrontEndSim {
         }
     }
 
-    stopInstructions() {
+    stopInstructions = () => {
         value = false;
     }
 
-    changeDelay() {
+    changeDelay = () => {
         delayTime = parseInt(document.getElementById("delayInput").content);
     }
-}
