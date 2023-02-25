@@ -8,7 +8,7 @@
     <body onload="setMemory()">
         <div id="topHalf">
             <div id="registerView" class="view">
-                <p id="registers"></p>
+                
             </div>
             <div id="asmView" class="view">
                 <input id="fileUpload" type="file" name="fileupload"/>
@@ -18,10 +18,14 @@
         </div>
         <div id="bottomHalf">
             <div id="settingsAndButtons" class="view">
+                <div id="settings">
+                    
+                </div>
                 <div id="playButtons">
                     <button id="pauseButton" onclick="//pause()" class="controlButton"><img src="images/pauseButton.png"></button>
                     <button id="playButton" onclick="//play()" class="controlButton"><img src="images/playButton.png"></button>
                     <button id="forwardButton" onclick="//fastForward()" class="controlButton"><img src="images/fastForwardButton.png"></button>
+                    <button id="fullForwardButton" onclick="//fullForward()" class="controlButton"><img src="images/fullForwardButton.png"></button>
                 </div>
             </div>
             <div id="memoryView" class="view">
