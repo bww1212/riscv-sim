@@ -19,13 +19,13 @@
         <div id="bottomHalf" class="wrapper">
             <div id="settingsAndButtons" class="view">
                 <div id="settings">
-                    
+
                 </div>
                 <div id="playButtons">
-                    <button id="pauseButton" onclick="//pause()" class="controlButton"><img src="images/pauseButton.png"></button>
-                    <button id="playButton" onclick="//play()" class="controlButton"><img src="images/playButton.png"></button>
-                    <button id="forwardButton" onclick="//fastForward()" class="controlButton"><img src="images/fastForwardButton.png"></button>
-                    <button id="fullForwardButton" onclick="//fullForward()" class="controlButton"><img src="images/fullForwardButton.png"></button>
+                    <button id="pauseButton" onclick="stopInstructions()" class="controlButton"><img src="images/pauseButton.png"></button>
+                    <button id="playButton" onclick="playInstructions(.5)" class="controlButton"><img src="images/playButton.png"></button>
+                    <button id="forwardButton" onclick="executeOneInstruction()" class="controlButton"><img src="images/fastForwardButton.png"></button>
+                    <button id="fullForwardButton" onclick="executeTenInstructions()" class="controlButton"><img src="images/fullForwardButton.png"></button>
                 </div>
             </div>
             <div id="memoryView" class="view">
