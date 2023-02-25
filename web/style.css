@@ -10,11 +10,21 @@ img {
     max-height: 30px;
 }
 
+.wrapper {
+    display: flex;
+    flex-direction: row;
+}
 .controlButton {
     background-color: rgb(226, 226, 226);
     border: none;
 }
 .view {
     border: rgb(18, 18, 18);
-    display: flex
+    margin: 1%;
+    padding: 1.5%;
+    display: flex;
+    max-width: 45%;
+    min-width: 45%;
+    min-height: 45%;
+    max-height: 45%
 }
