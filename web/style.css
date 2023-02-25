@@ -67,7 +67,12 @@ button {
     max-width: fit-content;
     border-width: 1px;
     border-radius: 3px;
+    font-family: 'Lucida Console', Courier, monospace;
 }
 #uploadButton:hover {
     background-color:rgb(220, 220, 220);
+}
+
+#fileUpload {
+    font-family: 'Lucida Console', Courier, monospace;
 }
