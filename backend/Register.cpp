@@ -1,6 +1,12 @@
 #include "Register.hpp"
 using namespace std;
 
+void Register::Register(void) {
+	// Dummy constructor
+	this.nbits = 0;
+	this.data = NULL;
+}
+
 void Register::Register(int bits) {
 	this.nbits = bits;
 	this.data = (uint8_t*)malloc(bits);

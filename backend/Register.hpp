@@ -5,6 +5,7 @@
 
 class Register {
 	public:
+	Register(void); // Dummy constructor for making arrays and such
 	Register(int bits); // Valid range will be 0 to bits-1
 	~Register();
 	
