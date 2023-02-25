@@ -44,13 +44,14 @@ class FrontEndSim {
         // Print the instruction list
         // Call with an offset
         // If calling with 0, that will give the instruction being called, 1 will be the one after that and so on
+        
     }
 
     printMemoryView() {
         // Print view of memory in a scroll box
     }
 
-    setMemerySet(sizeInBytes) {
+    setMemerySize(sizeInBytes) {
         // Call method to set memory size
     }
 
