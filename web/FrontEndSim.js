@@ -1,9 +1,10 @@
 class FrontEndSim {
     byteArrayFromObject;
     instructionCounter;
+    delayTime;
 
     uploadFile() {
-        fileExtension = fileupload.split('.').pop();
+        fileExtension = document.getElementById("fileUpload").split('.').pop();
         if (fileExtension != 'o') {
             window.alert("Please enter an object file.");
             return null;
@@ -63,7 +64,7 @@ class FrontEndSim {
         }
     }
 
-    playInstructions(delayTime) {
+    playInstructions() {
         while (value) {
             // Method to execute one instruction
             delay(delayTime);
@@ -72,5 +73,9 @@ class FrontEndSim {
 
     stopInstructions() {
         value = false;
+    }
+
+    changeDelay() {
+        delayTime = parseInt(document.getElementById("delayInput").content);
     }
 }
