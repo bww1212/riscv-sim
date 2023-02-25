@@ -1,0 +1,1 @@
+emcc ../backend/Api.cpp -o wasm.js -sEXPORTED_FUNCTIONS=_setMemorySize,_getInstructionStream,_getMemory,_getRegister,_execute -sSINGLE_FILE -sEXPORTED_RUNTIME_METHODS=ccall,cwrap
