@@ -1,15 +1,13 @@
 html {
-    background-color: rgb(226, 226, 226);
+    background-color: rgb(200, 200, 200);
     color: rgb(18, 18, 18);
     font-family: 'Lucida Console', Courier, monospace;
 }
-button {
-    background-color:rgb(239, 239, 239);
-    height: 25px;
-    max-width: fit-content;
-}
 img {
     max-height: 30px;
+}
+button {
+    padding: 3px;
 }
 
 .wrapper {
@@ -18,12 +16,20 @@ img {
 }
 .controlButton {
     background-color: rgb(226, 226, 226);
-    border: none;
+    border-color: rgb(226, 226, 226); /*Supposed to be the same as background-color; i.e. an invisible border*/
+    border-width: 2px;
+    border-radius: 3px;
+    border-style: solid;
+}
+.controlButton:hover {
+    border-color:rgb(18, 18, 18);
 }
 .view {
+    background-color: rgb(226, 226, 226);
     border-color: rgb(18, 18, 18);
-    border-width: 10px;
+    border-width: 2px;
     border-radius: 5px;
+    border-style: solid;
     margin: 1%;
     padding: 1%;
     display: flex;
@@ -38,21 +44,29 @@ img {
     left: 5px;
     top: 5px;
 }
-
 #asmView {
     position: absolute;
     right: 5px;
     top: 5px;
 }
-
 #settingsAndButtons {
     position: absolute;
     left: 5px;
     bottom: 5px;
 }
-
 #memoryView {
     position:absolute;
     right: 5px;
     bottom: 5px;
+}
+
+#uploadButton {
+    background-color:rgb(239, 239, 239);
+    height: 25px;
+    max-width: fit-content;
+    border-width: 1px;
+    border-radius: 3px;
+}
+#uploadButton:hover {
+    background-color:rgb(220, 220, 220);
 }
