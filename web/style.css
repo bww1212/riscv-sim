@@ -31,3 +31,27 @@ img {
     min-width: 45%;
     align-items: center;
 }
+
+#registerView {
+    position: absolute;
+    left: 5px;
+    top: 5px;
+}
+
+#asmView {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+}
+
+#settingsAndButtons {
+    position: absolute;
+    left: 5px;
+    bottom: 5px;
+}
+
+#memoryView {
+    position:absolute;
+    right: 5px;
+    bottom: 5px;
+}

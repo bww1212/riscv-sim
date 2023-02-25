@@ -51,7 +51,7 @@ class FrontEndSim {
         // Print view of memory in a scroll box
     }
 
-    setMemerySize(sizeInBytes) {
+    setMemorySize(sizeInBytes) {
         // Call method to set memory size
     }
 
@@ -66,6 +66,7 @@ class FrontEndSim {
     }
 
     playInstructions() {
+        value = true;
         while (value) {
             this.executeOneInstruction()
             delay(delayTime);
