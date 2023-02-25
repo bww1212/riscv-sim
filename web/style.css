@@ -2,6 +2,7 @@ html {
     background-color: rgb(200, 200, 200);
     color: rgb(18, 18, 18);
     font-family: 'Lucida Console', Courier, monospace;
+    margin: 3px;
 }
 img {
     max-height: 30px;
@@ -15,8 +16,8 @@ button {
     flex-direction: row;
 }
 .controlButton {
-    background-color: rgb(226, 226, 226);
-    border-color: rgb(226, 226, 226); /*Supposed to be the same as background-color; i.e. an invisible border*/
+    background-color: rgb(240, 240, 240);
+    border-color: rgb(240, 240, 240); /*Supposed to be the same as background-color; i.e. an invisible border*/
     border-width: 2px;
     border-radius: 3px;
     border-style: solid;

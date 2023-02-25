@@ -23,10 +23,10 @@
                     <input type="text" name="delayInput" id="delayInput" onchange="changeDelay()">
                 </div>
                 <div id="playButtons">
-                    <button id="pauseButton" onclick="stopInstructions()" class="controlButton"><img src="images/pauseButton.png"></button>
-                    <button id="playButton" onclick="playInstructions()" class="controlButton"><img src="images/playButton.png"></button>
-                    <button id="forwardButton" onclick="executeOneInstruction()" class="controlButton"><img src="images/fastForwardButton.png"></button>
-                    <button id="fullForwardButton" onclick="executeTenInstructions()" class="controlButton"><img src="images/fullForwardButton.png"></button>
+                    <button id="pauseButton" alt="Button to Halt the Execution of the RISC-V code" onclick="stopInstructions()" class="controlButton"><img src="images/pauseButton.png"></button>
+                    <button id="playButton" alt="Button to Begin the Execution of the RISC-V code" onclick="playInstructions()" class="controlButton"><img src="images/playButton.png"></button>
+                    <button id="forwardButton" alt="Button to Execute the next instruction and halt" onclick="executeOneInstruction()" class="controlButton"><img src="images/fastForwardButton.png"></button>
+                    <button id="fullForwardButton" alt="Button to Execute the next 10 instructions and halt" onclick="executeTenInstructions()" class="controlButton"><img src="images/fullForwardButton.png"></button>
                 </div>
             </div>
             <div id="memoryView" class="view">
