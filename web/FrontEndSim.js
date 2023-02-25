@@ -4,7 +4,7 @@ class FrontEndSim {
         if (fileExtension != 'o') {
             window.alert("Please enter an object file.");
         }
-
+        
         // Parse the file
     }
 }
