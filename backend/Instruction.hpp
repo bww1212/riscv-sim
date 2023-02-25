@@ -6,16 +6,16 @@
 #define SIGN_EXTEND_32BIT(B, V) ((V >> (B - 1)) & 1) ? \
     (0xFFFFFFFF << B) | V : V
 
-struct RInstruction {
+typedef struct RInstruction {
     uint opcode: 7;
     uint rd: 5;
     uint funct3: 3;
     uint rs1: 5;
     uint rs2: 5;
     uint funct7: 7;
-};
+} RInstruction;
 
-struct IInstruction {
+typedef struct IInstruction {
     uint opcode: 7;
     uint rd: 5;
     uint funct3: 3;
@@ -24,9 +24,9 @@ struct IInstruction {
     inline int32_t imm() {
         return SIGN_EXTEND_32BIT(12, imm11_0);
     }
-};
+} IInstruction;
 
-struct SInstruction {
+typedef struct SInstruction {
     uint opcode: 7;
     uint imm4_0: 5;
     uint funct3: 3;
@@ -36,9 +36,9 @@ struct SInstruction {
     inline int32_t imm() {
         return SIGN_EXTEND_32BIT(12, (imm11_5 << 5) | imm4_0);
     }
-};
+} SInstruction;
 
-struct BInstruction {
+typedef struct BInstruction {
     uint opcode: 7;
     uint imm11: 1;
     uint imm4_1: 4;
@@ -51,18 +51,18 @@ struct BInstruction {
         return SIGN_EXTEND_32BIT(13, 
             (imm12 << 12) | (imm11 << 11) | (imm10_5 << 5) | (imm4_1 << 1));
     }
-};
+} BInstruction;
 
-struct UInstruction {
+typedef struct UInstruction {
     uint opcode: 7;
     uint rd: 5;
     uint imm31_12: 20;
     inline int32_t imm() {
         return imm31_12 << 12;
     }
-};
+} UInstruction;
 
-struct JInstruction {
+typedef struct JInstruction {
     uint opcode: 7;
     uint rd: 5;
     uint imm19_12: 8;
@@ -73,6 +73,15 @@ struct JInstruction {
         return SIGN_EXTEND_32BIT(21,
             (imm20 << 20) | (imm19_12 << 12) | (imm11 << 11) | (imm10_1 << 1));
     }
-};
+} JInstruction;
+
+typedef union Instruction {
+	RInstruction r;
+	IInstruction i;
+	SInstruction s;
+	BInstruction b;
+	UInstruction u;
+	JInstruction j;
+} Instruction;
 
 #endif
