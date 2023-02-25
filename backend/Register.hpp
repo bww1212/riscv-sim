@@ -5,13 +5,17 @@
 
 class Register {
 	public:
-	Register(int bits);
+	Register(void); // Dummy constructor for making arrays and such
+	Register(int bits); // Valid range will be 0 to bits-1
 	~Register();
-	void send(Register o, int lsrc, int usrc, int tgt);
+	
+	// Send a register or part of a register to another
+	void send(Register o, int lsrc, int usrc, int tgt); // Source range (inclusive), destination start
 	void send(Register o) { send(o, 0, this.nbits, 0); }
-	uint32_t operator()(int lower, int upper);
-	uint8_t  operator()(int bit);
-	uint32_t operator()(void);
+	// Access contents of this register
+	uint32_t operator()(int lower, int upper); // Range of bits, inclusive
+	uint8_t  operator()(int bit); // A single bit
+	uint32_t operator()(void); // The whole register, truncated to the first 32 bits
 	
 	private:
 	int nbits;
