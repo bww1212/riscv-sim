@@ -27,3 +27,71 @@ void CPU::loadProgram(uint8_t* bytes, uint size) {
 uint32_t CPU::executeInstruction() {
     return pc();
 }
+
+void CPU::alu_r(RInstruction i) {
+	switch (i.funct3) {
+		case 0x0:
+			if (i.funct7 == 0) {
+				registers[i.rd].set(registers[i.rs1]() + registers[i.rs2]()); // ADD
+			} else {
+				registers[i.rd].set(registers[i.rs1]() - registers[i.rs2]()); // SUB
+			}
+			break;
+		case 0x4:
+			registers[i.rd].set(registers[i.rs1]() ^ registers[i.rs2]()); // XOR
+			break;
+		case 0x6:
+			registers[i.rd].set(registers[i.rs1]() | registers[i.rs2]()); // OR
+			break;
+		case 0x7:
+			registers[i.rd].set(registers[i.rs1]() & registers[i.rs2]()); // AND
+			break;
+		case 0x1:
+			registers[i.rd].set(registers[i.rs1]() << registers[i.rs2]()); // SLL
+			break;
+		case 0x5:
+			if (i.funct7 == 0)
+				registers[i.rd].set( ((uint32_t)registers[i.rs1]()) >> registers[i.rs2]()); // SRL
+			else
+				registers[i.rd].set( (( int32_t)registers[i.rs1]()) >> registers[i.rs2]() ); // SRA
+			break;
+		case 0x2:
+			registers[i.rd].set( (( int32_t)registers[i.rs1]()) < (( int32_t)registers[i.rs2]()) ); // SLT
+			break;
+		case 0x3:
+			registers[i.rd].set( ((uint32_t)registers[i.rs1]()) < ((uint32_t)registers[i.rs2]()) ); // SLTU
+			break;
+	}
+}
+
+void CPU::alu_i(IInstruction i) {
+	switch (i.funct3) {
+		case 0x0:
+			registers[i.rd].set(registers[i.rs1]() + i.imm()); // ADDI
+			break;
+		case 0x4:
+			registers[i.rd].set(registers[i.rs1]() ^ i.imm()); // XORI
+			break;
+		case 0x6:
+			registers[i.rd].set(registers[i.rs1]() | i.imm()); // ORI
+			break;
+		case 0x7:
+			registers[i.rd].set(registers[i.rs1]() & i.imm()); // ANDI
+			break;
+		case 0x1:
+			registers[i.rd].set(registers[i.rs1]() << i.imm4_0()); // SLLI
+			break;
+		case 0x5:
+			if (i.imm11_5() == 0)
+				registers[i.rd].set( ((uint32_t)registers[i.rs1]()) >> i.imm4_0()); // SRLI
+			else
+				registers[i.rd].set( (( int32_t)registers[i.rs1]()) >> i.imm4_0()); // SRAI
+			break;
+		case 0x2:
+			registers[i.rd].set( (( int32_t)registers[i.rs1]()) < i.imm()); // SLTI
+			break;
+		case 0x3:
+			registers[i.rd].set( ((uint32_t)registers[i.rs1]()) < i.imm()); // SLTIU
+			break;
+	}
+}

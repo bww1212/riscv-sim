@@ -16,10 +16,6 @@ Register::Register(int bits) {
 
 Register::~Register() {}
 
-void Register::set(uint32_t value) {
-	this->data = value;
-}
-
 void Register::setBit(uint8_t bit, uint8_t value) {
 	if (value != 0 && value != 1)
 		throw runtime_error("Register set bit failed: value must be 0 or 1");
@@ -61,8 +57,4 @@ uint8_t Register::operator()(int bit) {
 	this_bit = this_bit & data;
 	this_bit >>= bit;
 	return (uint8_t)this_bit;
-}
-
-uint32_t Register::operator()(void) {
-	return this->data;
 }

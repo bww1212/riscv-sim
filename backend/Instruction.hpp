@@ -24,6 +24,12 @@ typedef struct IInstruction {
     inline int32_t imm() {
         return SIGN_EXTEND_32BIT(12, imm11_0);
     }
+    inline int32_t imm11_5() {
+    	return imm11_0 >> 5;
+    }
+    inline int32_t imm4_0() {
+    	return imm11_0 & 0b11111;
+    }
 } IInstruction;
 
 typedef struct SInstruction {
