@@ -1,0 +1,16 @@
+body {
+    background-color: rgb(226, 226, 226);
+    color: rgb(18, 18, 18);
+    font-family: 'Times New Roman', Times, serif;
+}
+button {
+    background-color:rgb(198, 198, 198);
+}
+img {
+    max-height: 30px;
+}
+
+.controlButton {
+    background-color: rgb(226, 226, 226);
+    border: none;
+}

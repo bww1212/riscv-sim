@@ -4,7 +4,7 @@
         <script src="FrontEndSim.js"></script>
         <link rel="stylesheet" href="style.css">
     </head>
-    <body>
+    <body onload="setMemory()">
         <div id="topHalf">
             <div id="registerView">
 
@@ -17,9 +17,9 @@
         <div id="bottomHalf">
             <div id="settingsAndButtons">
                 <div id="playButtons">
-                    <button id="pauseButton" onclick="//pause()"><img src="images/pauseButton.png"></button>
-                    <button id="playButton" onclick="//play()"><img src="images/playButton.png"></button>
-                    <button id="forwardButton" onclick="//fastForward()"><img src="images/fastForwardButton.png"></button>
+                    <button id="pauseButton" onclick="//pause()" class="controlButton"><img src="images/pauseButton.png"></button>
+                    <button id="playButton" onclick="//play()" class="controlButton"><img src="images/playButton.png"></button>
+                    <button id="forwardButton" onclick="//fastForward()" class="controlButton"><img src="images/fastForwardButton.png"></button>
                 </div>
             </div>
             <div id="memoryView">
