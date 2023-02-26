@@ -15,6 +15,26 @@ CPU::CPU() : zero(registers[0]), ra(registers[1]), sp(registers[2]), gp(register
     reset();
 }
 
+const uint8_t* CPU::memoryPointer(uint16_t address) {
+	return memory + address;
+}
+
+uint8_t CPU::byteAtMemory(uint16_t address) {
+	return memory[address];
+}
+
+uint16_t CPU::halfWordAtMemory(uint16_t address) {
+	return *((uint16_t*) (memory + address));
+}
+
+uint32_t CPU::wordAtMemory(uint16_t address) {
+	return *((uint32_t*) (memory + address));
+}
+
+uint32_t CPU::registerContents(uint8_t index) {
+	return registers[index]();
+}
+
 void CPU::reset() {
     for (int i = 0; i < 32; i++)
         registers[i] = Register(32);
