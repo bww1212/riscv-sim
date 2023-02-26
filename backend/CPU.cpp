@@ -56,6 +56,11 @@ void CPU::reset() {
 void CPU::loadProgram(uint8_t* bytes, uint size) {
     reset();
     memcpy(memory, bytes, size);
+	programSize = size;
+}
+
+uint16_t CPU::programBytes() {
+	return programSize;
 }
 
 uint32_t CPU::executeInstruction() {

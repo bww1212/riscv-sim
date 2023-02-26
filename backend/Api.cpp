@@ -2,6 +2,8 @@
 #include "CPU.cpp"
 #include "Register.hpp"
 #include "Register.cpp"
+#include "Instruction.hpp"
+#include "Instruction.cpp"
 
 #include <sstream>
 #include <string>
@@ -20,7 +22,15 @@ extern "C" {
     void setMemorySize(int bytes) { ; }
     // Returns empty string if beyond end of the program
     // Offset is relative to the PC
-    char* getInstructionStream(int offset) { return "add x1 x1 x1"; }
+    const char* getInstructionStream() {
+        std::string ret;
+        int programBytes = cpu.programBytes();
+        for (int i = 0; i < programBytes; i += 4) {
+            uint32_t word = cpu.wordAtMemory(i);
+            ret += instructionString(word) + "\n";
+        }
+        return ret.c_str();
+    }
     // Load program into memory and start executing
     void loadProgram(uint8_t* bytes, uint size) {
         cpu.loadProgram(bytes, size);

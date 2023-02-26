@@ -20,6 +20,7 @@ class CPU {
         uint32_t wordAtMemory(uint16_t address);
         uint32_t registerContents(uint8_t index);
         uint32_t pcContents();
+        uint16_t programBytes();
         static std::string registerName(uint8_t index, bool numeric = false);
     private:
         void reset();
@@ -27,6 +28,7 @@ class CPU {
         Register pc;
         Register registers[32];
         uint8_t memory[MEMSIZE];
+        uint16_t programSize;
         Register &zero, &ra, &sp, &gp, &tp, &fp;
         Register &t0, &t1, &t2, &t3, &t4, &t5, &t6;
         Register &s0, &s1, &s2, &s3, &s4, &s5, &s6, &s7, &s8, &s9, &s10, &s11;
