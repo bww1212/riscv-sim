@@ -61,7 +61,7 @@ button {
     position:absolute;
     right: 5px;
     top: 5px;
-    height: fit-content;
+    height: calc(100vh - 30px);
     box-sizing: border-box;
     max-width: 48%;
     min-width: 48%;
@@ -99,8 +99,7 @@ button {
 
 #memory {
     overflow: scroll;
-    max-height: 625px;
-    box-sizing: border-box;
+    height: 90vh;
 }
 
 #instructions {
