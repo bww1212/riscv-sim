@@ -64,6 +64,11 @@ button {
     height: fit-content;
     box-sizing: border-box;
 }
+#instructionView {
+    position: absolute;
+    left: 5px;
+    top: 250px;
+}
 
 #uploadButton {
     background-color:rgb(239, 239, 239);
@@ -93,5 +98,12 @@ button {
 #memory {
     overflow: scroll;
     max-height: 625px;
+    box-sizing: border-box;
+}
+
+#instructions {
+    overflow: scroll;
+    max-height: 200px;
+    width: 300px;
     box-sizing: border-box;
 }
