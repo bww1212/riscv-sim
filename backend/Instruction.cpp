@@ -1,18 +1,20 @@
 #include "Instruction.hpp"
 
+#include "CPU.hpp"
 #include <string>
+#include <regex>
 #include <map>
 
-const std::string INST_NAME = "{INST}\t";
-const std::string R_INSTR_FORMAT = "{RD}, {RS1}, {RS2}";
-const std::string I_INSTR_FORMAT = "{RD}, {RS1}, {IMM}";
-const std::string LOAD_INSTR_FORMAT = "{RD}, {IMM}({RS1})";
-const std::string STORE_INSTR_FORMAT = "{RS2}, {IMM}({RS1})";
-const std::string JAL_INSTR_FORMAT = "{RD}, {IMM}";
+const std::string INST_NAME_FORMAT = "INST\t";
+const std::string R_INSTR_FORMAT = "RD, RS1, RS2";
+const std::string I_INSTR_FORMAT = "RD, RS1, IMM";
+const std::string LOAD_INSTR_FORMAT = "RD, IMM(RS1)";
+const std::string STORE_INSTR_FORMAT = "RS2, IMM(RS1)";
+const std::string BRANCH_INSTR_FORMAT = "RS1, RS2, IMM";
+const std::string JAL_INSTR_FORMAT = "RD, IMM";
+const std::string U_INSTR_FORMAT = "RD, IMM";
 
-const std::string J_INSTR_FORMAT = "{INST}\t";
-
-const std::map<uint8_t, std::map<uint8_t, std::string>> INSTRUCTION_NAME_MAP = {
+std::map<uint8_t, std::map<uint8_t, std::string>> INSTRUCTION_NAME_MAP = {
     {
         OP_ALU_R,
         {
@@ -74,27 +76,72 @@ const std::map<uint8_t, std::map<uint8_t, std::string>> INSTRUCTION_NAME_MAP = {
 
 std::string instructionString(uint32_t word) {
     Instruction instr(word);
-    std::string instrFormat = INST_NAME;
+    std::string instrName;
+    std::string instrFormat = INST_NAME_FORMAT;
     switch (instr.opcode) {
         case OP_ALU_R:
+            instrFormat += R_INSTR_FORMAT;
+            instrName = INSTRUCTION_NAME_MAP[OP_ALU_R][instr.r.funct3 | instr.r.funct7];
+            std::regex_replace(instrFormat, std::regex("RD"), CPU::registerName(instr.r.rd));
+            std::regex_replace(instrFormat, std::regex("RS1"), CPU::registerName(instr.r.rs1));
+            std::regex_replace(instrFormat, std::regex("RS2"), CPU::registerName(instr.r.rs2));
 			break;
 		case OP_ALU_I:
+            instrFormat += I_INSTR_FORMAT;
+            instrName = INSTRUCTION_NAME_MAP[OP_ALU_I][instr.i.funct3 != 5 ? instr.i.funct3 : instr.i.imm11_5() | instr.i.funct3];
+            std::regex_replace(instrFormat, std::regex("RD"), CPU::registerName(instr.i.rd));
+            std::regex_replace(instrFormat, std::regex("RS1"), CPU::registerName(instr.i.rs1));
+            std::regex_replace(instrFormat, std::regex("IMM"), std::to_string(instr.i.imm()));
 			break;
 		case OP_LOAD:
+            instrFormat += LOAD_INSTR_FORMAT;
+            instrName = INSTRUCTION_NAME_MAP[OP_LOAD][instr.i.funct3];
+            std::regex_replace(instrFormat, std::regex("RD"), CPU::registerName(instr.i.rd));
+            std::regex_replace(instrFormat, std::regex("RS1"), CPU::registerName(instr.i.rs1));
+            std::regex_replace(instrFormat, std::regex("IMM"), std::to_string(instr.i.imm()));
 			break;
 		case OP_STORE:
+            instrFormat += STORE_INSTR_FORMAT;
+            instrName = INSTRUCTION_NAME_MAP[OP_STORE][instr.s.funct3];
+            std::regex_replace(instrFormat, std::regex("RS1"), CPU::registerName(instr.s.rs1));
+            std::regex_replace(instrFormat, std::regex("RS2"), CPU::registerName(instr.s.rs2));
+            std::regex_replace(instrFormat, std::regex("IMM"), std::to_string(instr.s.imm()));
 			break;
 		case OP_BRANCH:
+            instrFormat += BRANCH_INSTR_FORMAT;
+            instrName = INSTRUCTION_NAME_MAP[OP_BRANCH][instr.b.funct3];
+            std::regex_replace(instrFormat, std::regex("RS1"), CPU::registerName(instr.b.rs1));
+            std::regex_replace(instrFormat, std::regex("RS2"), CPU::registerName(instr.b.rs2));
+            std::regex_replace(instrFormat, std::regex("IMM"), std::to_string(instr.b.imm()));
 			break;
 		case OP_JUMP_LINK:
+            instrFormat += JAL_INSTR_FORMAT;
+            instrName = INSTRUCTION_NAME_MAP[OP_JUMP_LINK][0];
+            std::regex_replace(instrFormat, std::regex("RD"), CPU::registerName(instr.j.rd));
+            std::regex_replace(instrFormat, std::regex("IMM"), std::to_string(instr.j.imm()));
 			break;
 		case OP_JUMP_LINK_REG:
+            instrFormat += I_INSTR_FORMAT;
+            instrName = INSTRUCTION_NAME_MAP[OP_JUMP_LINK_REG][0];
+            std::regex_replace(instrFormat, std::regex("RD"), CPU::registerName(instr.i.rd));
+            std::regex_replace(instrFormat, std::regex("RS1"), CPU::registerName(instr.i.rs1));
+            std::regex_replace(instrFormat, std::regex("IMM"), std::to_string(instr.i.imm()));
 			break;
 		case OP_LOAD_UPPER:
+            instrFormat += U_INSTR_FORMAT;
+            instrName = INSTRUCTION_NAME_MAP[OP_LOAD_UPPER][0];
+            std::regex_replace(instrFormat, std::regex("RD"), CPU::registerName(instr.u.rd));
+            std::regex_replace(instrFormat, std::regex("IMM"), std::to_string(instr.u.imm()));
 			break;
 		case OP_ADD_UPPER:
+            instrFormat += U_INSTR_FORMAT;
+            instrName = INSTRUCTION_NAME_MAP[OP_ADD_UPPER][0];
+            std::regex_replace(instrFormat, std::regex("RD"), CPU::registerName(instr.u.rd));
+            std::regex_replace(instrFormat, std::regex("IMM"), std::to_string(instr.u.imm()));
 			break;
-		case OP_ENV:
-			break;
+        default:
+            return "";
     }
+    std::regex_replace(instrFormat, std::regex("INSTR"), instrName);
+    return instrFormat;
 }

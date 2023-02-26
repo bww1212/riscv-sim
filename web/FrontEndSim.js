@@ -24,7 +24,7 @@ function printRegisters() {
         // Print register i in a 4x8 grid
     }
     console.log(result);
-    document.getElementById('registers').value = result;
+    document.getElementById('registers').textContent = result;
 }
 
 function printInstructions() {
@@ -40,7 +40,7 @@ function printMemoryView() {
     // Print view of memory in a scroll box
     result = Module.ccall('getMemory', 'string')
     console.log(result);
-    document.getElementById('memory').value = result;
+    document.getElementById('memory').textContent = result;
 }
 
 function setMemorySize(sizeInBytes) {
@@ -89,7 +89,7 @@ function changeDelay() {
 function initSim() {
     Module.onRuntimeInitialized = () => {
         setMemorySize(4096);
-        printInstructions();
+        // printInstructions();
         printMemoryView();
         printRegisters();
     };

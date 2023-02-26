@@ -2,19 +2,14 @@
 #include "CPU.cpp"
 #include "Register.hpp"
 #include "Register.cpp"
+#include "Instruction.hpp"
+#include "Instruction.cpp"
 
 #include <sstream>
 #include <string>
 #include <iomanip>
 
 CPU cpu;
-
-char* register_names[] = {
-    "ZERO", "RA", "SP", "GP", "TP", "T0", "T1", "T2",
-    "S0/FP", "S1", "A0", "A1", "A2", "A3", "A4", "A5",
-    "A6", "A7", "S2", "S3", "S4", "S5", "S6", "S7",
-    "S8", "S9", "S10", "S11", "T3", "T4", "T5", "T6"
-};
 
 std::string numToHex(uint digits, uint32_t value) {
     std::ostringstream out;
@@ -27,7 +22,15 @@ extern "C" {
     void setMemorySize(int bytes) { ; }
     // Returns empty string if beyond end of the program
     // Offset is relative to the PC
-    char* getInstructionStream(int offset) { return "add x1 x1 x1"; }
+    const char* getInstructionStream() {
+        std::string ret;
+        int programBytes = cpu.programBytes();
+        for (int i = 0; i < programBytes; i += 4) {
+            uint32_t word = cpu.wordAtMemory(i);
+            ret += instructionString(word) + "\n";
+        }
+        return ret.c_str();
+    }
     // Load program into memory and start executing
     void loadProgram(uint8_t* bytes, uint size) {
         cpu.loadProgram(bytes, size);
@@ -44,7 +47,7 @@ extern "C" {
     const char* getRegisters() { 
         std::string ret;
         for (int i = 0; i < 32; i++) {
-            ret += std::string(register_names[i]) + ":" + 
+            ret += CPU::registerName(i) + ":" + 
                 numToHex(8, cpu.registerContents(i)) + "\n";
         }
         ret += std::string("PC:") + numToHex(8, cpu.pcContents()) + "\n";
