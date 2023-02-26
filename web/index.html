@@ -15,9 +15,9 @@
         </div>
         <div id="instructionView" class="view">
             <p id="instructionTitle">Current Instruction</p>
-            <pre><div id="instructions">
+            <div id="instructions">
 
-            </div></pre>
+            </div>
         </div>
         <div id="bottomHalf" class="wrapper">
             <div id="memoryView" class="view">
@@ -36,9 +36,9 @@
                     <br>
                     <label for="delayInput">Delay (in milliseconds):</label>
                     <input type="text" name="delayInput" id="delayInput" onchange="changeDelay()">
-                    <br>
+                    <!--<br>
                     <label for="">RAM Size (in KB):</label>
-                    <input type="text" name="memoryInput" id="memoryInput" onchange="setMemorysize()">
+                    <input type="text" name="memoryInput" id="memoryInput" onchange="changeMemorySize()">-->
                 </div>
                 <div id="playButtons">
                     <button id="pauseButton" alt="Button to Halt the Execution of the RISC-V code" onclick="stopInstructions()" class="controlButton"><img src="images/pauseButton.png"></button>

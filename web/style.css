@@ -63,6 +63,8 @@ button {
     top: 5px;
     height: fit-content;
     box-sizing: border-box;
+    max-width: 50%;
+    min-width: 50%;
 }
 #instructionView {
     position: absolute;

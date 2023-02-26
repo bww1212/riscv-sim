@@ -1,7 +1,7 @@
 var byteArrayFromObject;
 var instructionCounter;
-var delayTime = 10;
-var memorySize = 4096;
+var delayTime = 100;
+var memorySize = 512;
 var instructions;
 
 function uploadFile() {
@@ -51,7 +51,7 @@ function printInstructions() {
     // If calling with 0, that will give the instruction being called, 1 will be the one after that and so on
     instructions = Module.ccall('getInstructionStream', 'string', 'int', '0');
     // document.getElementById('instructions').textContent = instructions;
-    console.log(instructions);
+    // console.log(instructions);
     instructions = instructions.split("\n")
     hightlightInstruction(0);
 }
@@ -63,17 +63,20 @@ function hightlightInstruction(index) {
 function printMemoryView() {
     // Print view of memory in a scroll box
     result = Module.ccall('getMemory', 'string')
+    console.log(result);
     document.getElementById('memory').textContent = result;
 }
 
-function setMemorySize(sizeInBytes) {
-    sizeInBytes = toString(sizeInBytes);
-    Module.ccall('setMemorySize', sizeInBytes);
-}
+// function setMemorySize(sizeInBytes) {
+//     memorySize = sizeInBytes;
+//     console.log(memorySize);
+//     console.log(memorySize - 1);
+//     Module.ccall('setMemorySize', 'boolean', 'Uint16', memorySize);
+// }
 
-function changeMemorySize() {
-    setMemorySize(parseInt(document.getElementById("memoryInput").value) * 1024);
-}
+// function changeMemorySize() {
+//     setMemorySize(parseInt(document.getElementById("memoryInput").value) * 1024);
+// }
 
 function executeOneInstruction() {
     // Call method to run one instruction
@@ -114,11 +117,11 @@ function changeDelay() {
 
 function initSim() {
     Module.onRuntimeInitialized = () => {
-        setMemorySize(memorySize);
+        // setMemorySize(memorySize);
         printInstructions();
         printMemoryView();
         printRegisters();
     };
     document.getElementById("delayInput").value = delayTime;
-    document.getElementById("memoryInput").value = memorySize/1024;
+    // document.getElementById("memoryInput").value = memorySize/1024;
 }
