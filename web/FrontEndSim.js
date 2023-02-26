@@ -76,7 +76,7 @@ async function playInstructions() {
     while (value) {
         this.executeOneInstruction()
         await delay(delayTime);
-        console.log("timeout");
+        console.log(delayTime);
     }
 }
 
@@ -85,5 +85,5 @@ function stopInstructions() {
 }
 
 function changeDelay() {
-    delayTime = parseInt(document.getElementById("delayInput").content);
+    delayTime = parseInt(document.getElementById("delayInput").value);
 }
