@@ -68,7 +68,7 @@ extern "C" {
     // Returns the hex value of the register ID
     char* getRegister(int registerId) { return "00000000"; }
     // Execute the current instruction and step forward
-    void execute() {
-        cpu.executeInstruction();
+    uint32_t execute() {
+        return cpu.executeInstruction();
     }
 }
