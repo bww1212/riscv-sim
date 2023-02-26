@@ -149,6 +149,6 @@ std::string instructionString(uint32_t word) {
         default:
             return "";
     }
-    std::regex_replace(instrFormat, std::regex("INST"), instrName);
+    replaceField("INST", instrName);
     return instrFormat;
 }
