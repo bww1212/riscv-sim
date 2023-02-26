@@ -102,7 +102,6 @@ button {
 }
 
 #instructions {
-    overflow: scroll;
     max-height: 200px;
     width: 300px;
     box-sizing: border-box;

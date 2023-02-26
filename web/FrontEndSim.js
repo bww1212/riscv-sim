@@ -71,6 +71,10 @@ function setMemorySize(sizeInBytes) {
     Module.ccall('setMemorySize', sizeInBytes);
 }
 
+function changeMemorySize() {
+    setMemorySize(parseInt(document.getElementById("memoryInput").value) * 1024);
+}
+
 function executeOneInstruction() {
     // Call method to run one instruction
     result = Module.ccall('execute');
@@ -115,4 +119,6 @@ function initSim() {
         printMemoryView();
         printRegisters();
     };
+    document.getElementById("delayInput").value = delayTime;
+    document.getElementById("memoryInput").value = memorySize/1024;
 }
