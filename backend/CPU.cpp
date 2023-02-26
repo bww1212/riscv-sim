@@ -55,6 +55,7 @@ void CPU::reset() {
     for (int i = 0; i < 32; i++)
         registers[i] = Register(32);
     pc = Register(32);
+	zero.setReadOnly();
     sp.set(MEMSIZE);
     memset(memory, 0, MEMSIZE);
 }
