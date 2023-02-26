@@ -7,7 +7,7 @@
 #include <array>
 #include <string>
 
-#define MEMSIZE 4096
+#define MEMSIZE 256
 
 class CPU {
     public:
