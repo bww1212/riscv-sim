@@ -13,6 +13,12 @@ class CPU {
         CPU();
         uint32_t executeInstruction();
         void loadProgram(uint8_t* bytes, uint size);
+        const uint8_t* memoryPointer(uint16_t address = 0);
+        uint8_t byteAtMemory(uint16_t address);
+        uint16_t halfWordAtMemory(uint16_t address);
+        uint32_t wordAtMemory(uint16_t address);
+        uint32_t registerContents(uint8_t index);
+        uint32_t pcContents();
     private:
         void reset();
         // Data
