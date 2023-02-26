@@ -24,13 +24,14 @@ function uploadFile() {
         console.log([array, size])
         for (let i = 0; i < size; i++) {
             let byte = array[i];
-            console.log(byte);
+            // console.log(byte);
             Module.ccall('loadProgramByte', 'boolean', ['Uint8', 'boolean'], [byte, false]);
         }
         Module.ccall('loadProgramByte', 'boolean', ['Uint8', 'boolean'], [0, true]);
         // Module.ccall('loadProgram', 'boolean', ['Uint8Array', 'number'], [array, size]);
         printMemoryView();
         printRegisters();
+        printInstructions();
     }
     reader.readAsArrayBuffer(fileThing.files[0])
 }
@@ -48,7 +49,8 @@ function printInstructions() {
     // Call with an offset
     // If calling with 0, that will give the instruction being called, 1 will be the one after that and so on
     result = Module.ccall('getInstructionStream', 'string', 'int', '0');
-    document.getElementById('instructions').value = result;
+    document.getElementById('instructions').textContent = result;
+    console.log(result);
 }
 
 function printMemoryView() {
@@ -65,7 +67,7 @@ function setMemorySize(sizeInBytes) {
 function executeOneInstruction() {
     // Call method to run one instruction
     Module.ccall('execute');
-    // printInstructions();
+    printInstructions();
     printMemoryView();
     printRegisters();
 }
@@ -102,7 +104,7 @@ function changeDelay() {
 function initSim() {
     Module.onRuntimeInitialized = () => {
         setMemorySize(memorySize);
-        // printInstructions();
+        printInstructions();
         printMemoryView();
         printRegisters();
     };
