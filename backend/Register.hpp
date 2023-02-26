@@ -22,7 +22,7 @@ class Register {
 	uint32_t operator()(void) { return this->data; } // The whole register, truncated to the first 32 bits
 	
 	private:
-	uint8_t readonly;
+	uint8_t readonly = 0;
 	int nbits;
 	uint32_t data;
 };
