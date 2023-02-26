@@ -30,10 +30,11 @@ class CPU {
         Register &s0, &s1, &s2, &s3, &s4, &s5, &s6, &s7, &s8, &s9, &s10, &s11;
         Register &a0, &a1, &a2, &a3, &a4, &a5, &a6, &a7;
         // Execute
-		void alu_r(RInstruction i);
-		void alu_i(IInstruction i);
-		void  load(IInstruction i);
-		void store(SInstruction i);
+		void  alu_r(RInstruction i);
+		void  alu_i(IInstruction i);
+		void   load(IInstruction i);
+		void  store(SInstruction i);
+		void branch(BInstruction i);
 };
 
 #endif
