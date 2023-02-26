@@ -11,6 +11,9 @@
 
 CPU cpu;
 
+uint16_t buffer_pos = 0;
+uint8_t buffer[4096];
+
 std::string numToHex(uint digits, uint32_t value) {
     std::ostringstream out;
     out << std::hex << std::setw(digits) << std::setfill('0') << std::uppercase << value;
@@ -34,6 +37,15 @@ extern "C" {
     // Load program into memory and start executing
     void loadProgram(uint8_t* bytes, uint size) {
         cpu.loadProgram(bytes, size);
+    }
+    // Load program into memory a byte at a time, terminate by setting done to true
+    void loadProgramByte(uint8_t byte, bool done) {
+        if (!done) {
+            buffer[buffer_pos++] = byte;
+        } else {
+            cpu.loadProgram(buffer, buffer_pos);
+            buffer_pos = 0;
+        }
     }
     // Returns all of memory in hex
     const char* getMemory() {
