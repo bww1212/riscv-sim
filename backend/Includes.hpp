@@ -8,4 +8,7 @@
 
 typedef unsigned int uint;
 
+#define SIGN_EXTEND_32BIT(B, V) ((V >> (B - 1)) & 1) ? \
+    (0xFFFFFFFF << B) | V : V
+
 #endif

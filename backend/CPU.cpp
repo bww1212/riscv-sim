@@ -3,6 +3,8 @@
 #include <memory>
 #include <cstring>
 
+using namespace std;
+
 CPU::CPU() : zero(registers[0]), ra(registers[1]), sp(registers[2]), gp(registers[3]),
     tp(registers[4]), t0(registers[5]), t1(registers[6]), t2(registers[7]), s0(registers[8]),
     fp(registers[8]), s1(registers[9]), a0(registers[10]), a1(registers[11]), a2(registers[12]),
@@ -16,7 +18,7 @@ CPU::CPU() : zero(registers[0]), ra(registers[1]), sp(registers[2]), gp(register
 void CPU::reset() {
     for (int i = 0; i < 32; i++)
         registers[i] = Register(32);
-    memset(memory, 0, 4096);
+    memset(memory, 0, MEMSIZE);
 }
 
 void CPU::loadProgram(uint8_t* bytes, uint size) {
@@ -93,5 +95,70 @@ void CPU::alu_i(IInstruction i) {
 		case 0x3:
 			registers[i.rd].set( ((uint32_t)registers[i.rs1]()) < i.imm()); // SLTIU
 			break;
+	}
+}
+
+void CPU::load(IInstruction i) {
+	switch (i.funct3) {
+		case 0x0: {
+			uint32_t byte = memory[ registers[i.rs1]() + i.imm() ];
+			byte = SIGN_EXTEND_32BIT(8, byte);
+			registers[i.rd].set(byte); // LB
+			break;
+		} case 0x1: {
+			uint32_t addr = registers[i.rs1]() + i.imm();
+			uint32_t half = memory[addr+1];
+			half = (half << 8) | memory[addr];
+			half = SIGN_EXTEND_32BIT(16, half);
+			registers[i.rd].set(half); // LH
+			break;
+		} case 0x2: {
+			uint32_t addr = registers[i.rs1]() + i.imm();
+			uint32_t word = memory[addr+3];
+			word = (word << 8) | memory[addr+2];
+			word = (word << 8) | memory[addr+1];
+			word = (word << 8) | memory[addr];
+			registers[i.rd].set(word); // LW
+			break;
+		} case 0x4: {
+			uint32_t byte = memory[ registers[i.rs1]() + i.imm() ];
+			registers[i.rd].set(byte); // LBU
+			break;
+		} case 0x5: {
+			uint32_t addr = registers[i.rs1]() + i.imm();
+			uint32_t half = memory[addr+1];
+			half = (half << 8) | memory[addr];
+			registers[i.rd].set(half); // LHU
+			break;
+		}
+	}
+}
+
+void CPU::store(SInstruction i) {
+	uint32_t addr = registers[i.rs1]() + i.imm();
+	switch(i.funct3) {
+		case 0x0: {
+			uint8_t byte = (uint8_t)registers[i.rs2]();
+			if (addr >= MEMSIZE)
+				throw runtime_error("Instruction store byte failed: invalid address");
+			memory[addr] = byte; // SB
+			break;
+		} case 0x1: {
+			uint16_t half = (uint16_t)registers[i.rs2]();
+			if (addr >= MEMSIZE - 1)
+				throw runtime_error("Instruction store half failed: invalid address");
+			memory[addr] = (uint8_t)half;
+			memory[addr+1] = (uint8_t)(half >> 8);
+			break;
+		} case 0x2: {
+			uint32_t word = registers[i.rs2]();
+			if (addr >= MEMSIZE - 3)
+				throw runtime_error("Instruction store word failed: invalid address");
+			memory[addr] = (uint8_t)word;
+			memory[addr+1] = (uint8_t)(word >>= 8);
+			memory[addr+2] = (uint8_t)(word >>= 8);
+			memory[addr+3] = (uint8_t)(word >> 8);
+			break;
+		}
 	}
 }

@@ -6,6 +6,8 @@
 
 #include <array>
 
+#define MEMSIZE 4096
+
 class CPU {
     public:
         CPU();
@@ -16,7 +18,7 @@ class CPU {
         // Data
         Register pc;
         Register registers[32];
-        uint8_t memory[4096];
+        uint8_t memory[MEMSIZE];
         Register &zero, &ra, &sp, &gp, &tp, &fp;
         Register &t0, &t1, &t2, &t3, &t4, &t5, &t6;
         Register &s0, &s1, &s2, &s3, &s4, &s5, &s6, &s7, &s8, &s9, &s10, &s11;
@@ -24,6 +26,8 @@ class CPU {
         // Execute
 		void alu_r(RInstruction i);
 		void alu_i(IInstruction i);
+		void  load(IInstruction i);
+		void store(SInstruction i);
 };
 
 #endif

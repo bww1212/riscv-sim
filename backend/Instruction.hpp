@@ -3,9 +3,6 @@
 
 #include "Includes.hpp"
 
-#define SIGN_EXTEND_32BIT(B, V) ((V >> (B - 1)) & 1) ? \
-    (0xFFFFFFFF << B) | V : V
-
 typedef struct RInstruction {
     uint opcode: 7;
     uint rd: 5;
