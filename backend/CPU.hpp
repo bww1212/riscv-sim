@@ -5,6 +5,7 @@
 #include "Instruction.hpp"
 
 #include <array>
+#include <string>
 
 #define MEMSIZE 4096
 
@@ -19,6 +20,7 @@ class CPU {
         uint32_t wordAtMemory(uint16_t address);
         uint32_t registerContents(uint8_t index);
         uint32_t pcContents();
+        static std::string registerName(uint8_t index, bool numeric = false);
     private:
         void reset();
         // Data

@@ -5,6 +5,13 @@
 
 using namespace std;
 
+const char* REGISTER_NAMES[] = {
+    "ZERO", "RA", "SP", "GP", "TP", "T0", "T1", "T2",
+    "S0/FP", "S1", "A0", "A1", "A2", "A3", "A4", "A5",
+    "A6", "A7", "S2", "S3", "S4", "S5", "S6", "S7",
+    "S8", "S9", "S10", "S11", "T3", "T4", "T5", "T6"
+};
+
 CPU::CPU() : pc(32), zero(registers[0]), ra(registers[1]), sp(registers[2]), gp(registers[3]),
     tp(registers[4]), t0(registers[5]), t1(registers[6]), t2(registers[7]), s0(registers[8]),
     fp(registers[8]), s1(registers[9]), a0(registers[10]), a1(registers[11]), a2(registers[12]),
@@ -287,4 +294,10 @@ void CPU::add_upper(UInstruction i) {
 
 void CPU::environ(IInstruction i) {
 	throw runtime_error("Debugging instructions are not supported");
+}
+
+std::string CPU::registerName(uint8_t index, bool numeric) {
+	if (!numeric)
+		return REGISTER_NAMES[index];
+	return std::string("x") + std::to_string(index);
 }
