@@ -24,7 +24,13 @@ button {
 }
 .controlButton:hover {
     border-color:rgb(18, 18, 18);
+    transform: scale(1.1);
 }
+.controlButton:active {
+    background-color: gray;
+    transform: scale(.9);
+}
+
 .view {
     background-color: rgb(226, 226, 226);
     border-color: rgb(18, 18, 18);
@@ -71,6 +77,11 @@ button {
 }
 #uploadButton:hover {
     background-color:rgb(220, 220, 220);
+    transform: scale(1.1);
+}
+#uploadButton:active {
+    background-color: gray;
+    transform: scale(.95);
 }
 
 #fileUpload {
