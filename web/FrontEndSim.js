@@ -87,7 +87,7 @@ function executeOneInstruction() {
 }
 
 async function executeTenInstructions() {
-    for (i = 0; i < 10; i++) {
+    for (let i = 0; i < 10; i++) {
         executeOneInstruction()
         await delay(30);
         console.log("based");
