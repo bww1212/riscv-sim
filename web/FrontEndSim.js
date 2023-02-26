@@ -38,6 +38,8 @@ function printRegisters() {
     for (i = 0; i < 32; i++) {
         // Print register i in a 4x8 grid
     }
+    console.log(result);
+    document.getElementById('registers').value = result;
 }
 
 function printInstructions() {
@@ -46,11 +48,14 @@ function printInstructions() {
     // If calling with 0, that will give the instruction being called, 1 will be the one after that and so on
     result = Module.ccall('getInstructionStream', '0');
     console.log(result);
+    document.getElementById('instructions').value = result;
 }
 
 function printMemoryView() {
     // Print view of memory in a scroll box
     result = Module.ccall('getMemory')
+    console.log(result);
+    document.getElementById('memory').value = result;
 }
 
 function setMemorySize(sizeInBytes) {
@@ -93,7 +98,10 @@ function changeDelay() {
 }
 
 function initSim() {
-    setMemorySize(4000);
-    printInstructions();
-    printMemoryView();
+    Module.onRuntimeInitialized = () => {
+        setMemorySize(4000);
+        printInstructions();
+        printMemoryView();
+        printRegisters();
+    };
 }
