@@ -17,8 +17,8 @@ Register::Register(int bits) {
 Register::~Register() {}
 
 void Register::setBit(uint8_t bit, uint8_t value) {
-	if (readonly)
-		return;
+	//if (readonly)
+	//	return;
 	if (value != 0 && value != 1)
 		throw runtime_error("Register set bit failed: value must be 0 or 1");
 	if (bit >= this->nbits)
@@ -29,8 +29,8 @@ void Register::setBit(uint8_t bit, uint8_t value) {
 }
 
 void Register::send(Register* o, int lsrc, int usrc, int tgt) {
-	if (o->readonly)
-		return;
+	//if (o->readonly)
+	//	return;
 	if (usrc < lsrc)
 		throw runtime_error("Register send failed; starting index must be before ending index");
 	if ((usrc - lsrc) + tgt > o->nbits)
