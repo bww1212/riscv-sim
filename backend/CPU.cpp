@@ -20,6 +20,7 @@ CPU::CPU() : pc(32), zero(registers[0]), ra(registers[1]), sp(registers[2]), gp(
     s7(registers[23]), s8(registers[24]), s9(registers[25]), s10(registers[26]), s11(registers[27]),
     t3(registers[28]), t4(registers[29]), t5(registers[30]), t6(registers[31]) {
     reset();
+    zero.setReadOnly();
 }
 
 const uint8_t* CPU::memoryPointer(uint16_t address) {

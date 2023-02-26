@@ -9,8 +9,9 @@ class Register {
 	Register(int bits); // Valid range will be 0 to bits-1
 	~Register();
 	
+	void setReadOnly() { readonly = 1; }
 	// Set contents
-	void set(uint32_t value) { this->data = value; }
+	void set(uint32_t value) { if (readonly) return; this->data = value; }
 	void setBit(uint8_t bit, uint8_t value);
 	// Send a register or part of a register to another
 	void send(Register* o, int lsrc, int usrc, int tgt); // Source range (inclusive), destination start
@@ -21,6 +22,7 @@ class Register {
 	uint32_t operator()(void) { return this->data; } // The whole register, truncated to the first 32 bits
 	
 	private:
+	uint8_t readonly;
 	int nbits;
 	uint32_t data;
 };
