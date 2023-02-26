@@ -3,7 +3,19 @@ var instructionCounter;
 var delayTime = 10;
 
 function uploadFile() {
-    // Do something
+    let fileThing = document.getElementById('fileUpload');
+    if (fileThing.files.length == 0) {
+        console.log("no file")
+        return
+    }
+    console.log(fileThing.files[0])
+    let reader = new FileReader();
+    reader.onload = function fileReadCompleated() {
+        // when its done reading, reader.result will have what you want
+        console.log(reader.result)
+    }
+    reader.readAsArrayBuffer(fileThing.files[0])
+    Module.ccall('loadProgram', reader.result);
 }
 
 function printRegisters() {
