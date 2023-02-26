@@ -23,9 +23,9 @@ function uploadFile() {
         console.log([array, size])
         for (let i = 0; i < size; i++) {
             let byte = array[i];
-            let bool = (i == size - 1)
-            Module.ccall('loadProgramByte', 'boolean', ['Uint8', 'boolean'], [byte, bool]);
+            Module.ccall('loadProgramByte', 'boolean', ['Uint8', 'boolean'], [byte, false]);
         }
+        Module.ccall('loadProgramByte', 'boolean', ['Uint8', 'boolean'], [0, true]);
         // Module.ccall('loadProgram', 'boolean', ['Uint8Array', 'number'], [array, size]);
         printMemoryView();
         printRegisters();
