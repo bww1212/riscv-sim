@@ -23,8 +23,8 @@ std::string numToHex(uint digits, uint32_t value) {
 
 extern "C" {
     // Allocate this many bytes of memory. Always call this before execution.
-    void setMemorySize(int bytes) { 
-        memory_size = bytes;
+    void setMemorySize(uint16_t bytes) { 
+        // memory_size = bytes;
     }
     // Returns empty string if beyond end of the program
     // Offset is relative to the PC
