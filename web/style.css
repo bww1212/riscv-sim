@@ -87,3 +87,7 @@ button {
 #fileUpload {
     font-family: 'Lucida Console', Courier, monospace;
 }
+
+#settings {
+    padding: 10px;
+}
