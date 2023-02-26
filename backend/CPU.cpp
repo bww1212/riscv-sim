@@ -15,30 +15,6 @@ CPU::CPU() : pc(32), zero(registers[0]), ra(registers[1]), sp(registers[2]), gp(
     reset();
 }
 
-const uint8_t* CPU::memoryPointer(uint16_t address) {
-	return memory + address;
-}
-
-uint8_t CPU::byteAtMemory(uint16_t address) {
-	return memory[address];
-}
-
-uint16_t CPU::halfWordAtMemory(uint16_t address) {
-	return *((uint16_t*) (memory + address));
-}
-
-uint32_t CPU::wordAtMemory(uint16_t address) {
-	return *((uint32_t*) (memory + address));
-}
-
-uint32_t CPU::registerContents(uint8_t index) {
-	return registers[index]();
-}
-
-uint32_t CPU::pcContents() {
-	return pc();
-}
-
 void CPU::reset() {
     for (int i = 0; i < 32; i++)
         registers[i] = Register(32);
@@ -224,4 +200,31 @@ void CPU::branch(BInstruction i) {
 				pc.set(pc() + i.imm());
 			break;
 	}
+}
+
+void CPU::jump_link(JInstruction i) {
+	rd.set(pc() + 4);
+	pc.set(pc() + i.imm());
+}
+
+void CPU::jump_link_reg(IInstruction i) {
+	rd.set(pc() + 4);
+	pc.set(registers[i.rs1]() + i.imm());
+}
+
+void CPU::load_upper(UInstruction i) {
+	uint32_t upper = i.imm() << 12;
+	uint32_t mask = 0x0000FFFF
+	uint32_t val = (registers[i.rd]() & mask) | upper;
+	registers[i.rd].set(val);
+}
+
+void CPU::add_upper(UInstruction i) {
+	uint32_t val = i.imm() << 12;
+	val += pc();
+	registers[i.rd].set(val);
+}
+
+void CPU::environ(IInstruction i) {
+	throw runtime_error("Debugging instructions are not supported");
 }
