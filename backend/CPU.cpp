@@ -114,14 +114,15 @@ void CPU::alu_r(RInstruction i) {
 	char err[256];
 	switch (i.funct3) {
 		case 0x0:
-			if (i.funct7 == 0)
+			if (i.funct7 == 0) {
 				registers[i.rd].set(registers[i.rs1]() + registers[i.rs2]()); // ADD
-			else if (i.funct7 == 0x20)
+			} else if (i.funct7 == 0x20) {
 				registers[i.rd].set(registers[i.rs1]() - registers[i.rs2]()); // SUB
-			else
+			} else {
 				snprintf(&err[0], 256, "Instruction (ADD/SUB) has invalid funct7: %x",
 					i.funct7);
 				throw runtime_error(&err[0]);
+			}
 			break;
 		case 0x4:
 			registers[i.rd].set(registers[i.rs1]() ^ registers[i.rs2]()); // XOR
@@ -136,14 +137,15 @@ void CPU::alu_r(RInstruction i) {
 			registers[i.rd].set(registers[i.rs1]() << registers[i.rs2]()); // SLL
 			break;
 		case 0x5:
-			if (i.funct7 == 0)
+			if (i.funct7 == 0) {
 				registers[i.rd].set( ((uint32_t)registers[i.rs1]()) >> registers[i.rs2]()); // SRL
-			else if (i.funct7 == 0x20)
+			} else if (i.funct7 == 0x20) {
 				registers[i.rd].set( (( int32_t)registers[i.rs1]()) >> registers[i.rs2]() ); // SRA
-			else
+			} else {
 				snprintf(&err[0], 256, "Instruction (SRL/SRA) has invalid funct7: %x",
 					i.funct7);
 				throw runtime_error(&err[0]);
+			}
 			break;
 		case 0x2:
 			registers[i.rd].set( (( int32_t)registers[i.rs1]()) < (( int32_t)registers[i.rs2]()) ); // SLT
@@ -177,14 +179,15 @@ void CPU::alu_i(IInstruction i) {
 			registers[i.rd].set(registers[i.rs1]() << i.imm4_0()); // SLLI
 			break;
 		case 0x5:
-			if (i.imm11_5() == 0)
+			if (i.imm11_5() == 0) {
 				registers[i.rd].set( ((uint32_t)registers[i.rs1]()) >> i.imm4_0()); // SRLI
-			else if (i.imm11_5() == 0x20)
+			} else if (i.imm11_5() == 0x20) {
 				registers[i.rd].set( (( int32_t)registers[i.rs1]()) >> i.imm4_0()); // SRAI
-			else
+			} else {
 				snprintf(&err[0], 256, "Instruction (SRLI/SRAI) has invalid funct7: %x",
 					i.imm11_5());
 				throw runtime_error(&err[0]);
+			}
 			break;
 		case 0x2:
 			registers[i.rd].set( (( int32_t)registers[i.rs1]()) < i.imm()); // SLTI
