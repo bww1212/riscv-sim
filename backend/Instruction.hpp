@@ -101,4 +101,6 @@ typedef union Instruction {
 	JInstruction j;
 } Instruction;
 
+std::string instructionString(uint32_t word);
+
 #endif
