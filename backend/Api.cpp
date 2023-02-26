@@ -1,13 +1,13 @@
 #include "CPU.hpp"
-#include "CPU.cpp"
 #include "Register.hpp"
-#include "Register.cpp"
 #include "Instruction.hpp"
-#include "Instruction.cpp"
 
-#include <sstream>
-#include <string>
-#include <iomanip>
+#ifndef __LOCAL_BUILD
+#include "CPU.cpp"
+#include "Register.cpp"
+#include "Instruction.cpp"
+#endif
+
 
 CPU cpu;
 
