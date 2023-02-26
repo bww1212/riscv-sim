@@ -2,6 +2,7 @@ var byteArrayFromObject;
 var instructionCounter;
 var delayTime = 10;
 var memorySize = 4096;
+var instructions;
 
 function uploadFile() {
     let fileThing = document.getElementById('fileUpload');
@@ -48,9 +49,15 @@ function printInstructions() {
     // Print the instruction list
     // Call with an offset
     // If calling with 0, that will give the instruction being called, 1 will be the one after that and so on
-    result = Module.ccall('getInstructionStream', 'string', 'int', '0');
-    document.getElementById('instructions').textContent = result;
-    console.log(result);
+    instructions = Module.ccall('getInstructionStream', 'string', 'int', '0');
+    // document.getElementById('instructions').textContent = instructions;
+    console.log(instructions);
+    instructions = instructions.split("\n")
+    hightlightInstruction(0);
+}
+
+function hightlightInstruction(index) {
+    document.getElementById('instructions').textContent = instructions[index];
 }
 
 function printMemoryView() {
@@ -66,8 +73,8 @@ function setMemorySize(sizeInBytes) {
 
 function executeOneInstruction() {
     // Call method to run one instruction
-    Module.ccall('execute');
-    printInstructions();
+    result = Module.ccall('execute');
+    hightlightInstruction(result / 4);
     printMemoryView();
     printRegisters();
 }
