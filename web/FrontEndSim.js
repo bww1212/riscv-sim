@@ -1,10 +1,10 @@
 var byteArrayFromObject;
 var instructionCounter;
-var delayTime;
+var delayTime = 10;
 
 function uploadFile() {
-    fileExtension = document.getElementById("fileUpload").split('.').pop();
-    if (fileExtension != 'o') {
+    fileExtension = document.getElementById("fileUpload").value.split('.').pop();
+    if (fileExtension != 'png') {
         window.alert("Please enter an object file.");
         return null;
     }
@@ -34,6 +34,7 @@ function parseFile(file) {
 }
 
 function printRegisters() {
+    result = Module.ccall('getRegisters')
     for (i = 0; i < 32; i++) {
         // Print register i in a 4x8 grid
     }
@@ -43,15 +44,18 @@ function printInstructions() {
     // Print the instruction list
     // Call with an offset
     // If calling with 0, that will give the instruction being called, 1 will be the one after that and so on
-    
+    result = Module.ccall('getInstructionStream', '0');
+    console.log(result);
 }
 
 function printMemoryView() {
     // Print view of memory in a scroll box
+    result = Module.ccall('getMemory')
 }
 
 function setMemorySize(sizeInBytes) {
-    // Call method to set memory size
+    sizeInBytes = toString(sizeInBytes);
+    Module.ccall('setMemorySize', sizeInBytes);
 }
 
 function executeOneInstruction() {
@@ -74,7 +78,7 @@ function delay(milliseconds) {
 async function playInstructions() {
     value = true;
     while (value) {
-        this.executeOneInstruction()
+        console.log(this.executeOneInstruction());
         await delay(delayTime);
         console.log(delayTime);
     }
@@ -86,4 +90,10 @@ function stopInstructions() {
 
 function changeDelay() {
     delayTime = parseInt(document.getElementById("delayInput").value);
+}
+
+function initSim() {
+    setMemorySize(4000);
+    printInstructions();
+    printMemoryView();
 }
