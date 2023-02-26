@@ -12,7 +12,8 @@
 CPU cpu;
 
 uint16_t buffer_pos = 0;
-uint8_t buffer[4096];
+uint8_t buffer[MEMSIZE];
+uint16_t memory_size = MEMSIZE;
 
 std::string numToHex(uint digits, uint32_t value) {
     std::ostringstream out;
@@ -22,7 +23,9 @@ std::string numToHex(uint digits, uint32_t value) {
 
 extern "C" {
     // Allocate this many bytes of memory. Always call this before execution.
-    void setMemorySize(int bytes) { ; }
+    void setMemorySize(int bytes) { 
+        memory_size = bytes;
+    }
     // Returns empty string if beyond end of the program
     // Offset is relative to the PC
     const char* getInstructionStream() {
@@ -50,7 +53,7 @@ extern "C" {
     // Returns all of memory in hex
     const char* getMemory() {
         std::string ret;
-        for (int i = 0; i < 4096; i += 4) {
+        for (int i = 0; i < memory_size; i += 4) {
             ret += numToHex(8, i) + ":" + numToHex(8, cpu.wordAtMemory(i)) + "\n";
         }
         return ret.c_str();
