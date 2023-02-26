@@ -18,6 +18,7 @@ class CPU {
         uint16_t halfWordAtMemory(uint16_t address);
         uint32_t wordAtMemory(uint16_t address);
         uint32_t registerContents(uint8_t index);
+        uint32_t pcContents();
     private:
         void reset();
         // Data

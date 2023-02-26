@@ -35,6 +35,10 @@ uint32_t CPU::registerContents(uint8_t index) {
 	return registers[index]();
 }
 
+uint32_t CPU::pcContents() {
+	return pc();
+}
+
 void CPU::reset() {
     for (int i = 0; i < 32; i++)
         registers[i] = Register(32);
