@@ -131,13 +131,13 @@ std::string instructionString(uint32_t word) {
             instrFormat += U_INSTR_FORMAT;
             instrName = INSTRUCTION_NAME_MAP[OP_LOAD_UPPER][0];
             std::regex_replace(instrFormat, std::regex("RD"), CPU::registerName(instr.u.rd));
-            std::regex_replace(instrFormat, std::regex("IMM"), std::to_string(instr.u.imm()));
+            std::regex_replace(instrFormat, std::regex("IMM"), std::to_string(instr.u.uimm()));
 			break;
 		case OP_ADD_UPPER:
             instrFormat += U_INSTR_FORMAT;
             instrName = INSTRUCTION_NAME_MAP[OP_ADD_UPPER][0];
             std::regex_replace(instrFormat, std::regex("RD"), CPU::registerName(instr.u.rd));
-            std::regex_replace(instrFormat, std::regex("IMM"), std::to_string(instr.u.imm()));
+            std::regex_replace(instrFormat, std::regex("IMM"), std::to_string(instr.u.uimm()));
 			break;
         default:
             return "";
