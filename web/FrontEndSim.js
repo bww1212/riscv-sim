@@ -20,10 +20,11 @@ function uploadFile() {
             size = memorySize;
             array = reader.result.slice(0, size);
         }
+        array = new Int8Array(array);
         console.log([array, size])
         for (let i = 0; i < size; i++) {
             let byte = array[i];
-            console.log(byte)
+            console.log(byte);
             Module.ccall('loadProgramByte', 'boolean', ['Uint8', 'boolean'], [byte, false]);
         }
         Module.ccall('loadProgramByte', 'boolean', ['Uint8', 'boolean'], [0, true]);
