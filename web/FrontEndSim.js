@@ -3,38 +3,7 @@ var instructionCounter;
 var delayTime = 10;
 
 function uploadFile() {
-    file = document.getElementById("fileUpload").files[0];
-    console.log(file);
-    parseFile(file);
-}
-
-function parseFile(file) {
-    console.log("Uploading: " + toString(file))
-    return new Promise((resolve, reject) => {
-        try {
-            var reader = new FileReader();
-            let byteArray = [];
-            reader.readAsArrayBuffer(file);
-            reader.onloadend = (evt) => {
-                if (evt.target.readyState == FileReader.DONE) {
-                    let buffer = evt.target.result,
-                    array = new Uint8Array(buffer);
-                    for (byte of array) {
-                        byteArray.push(byte);
-                    }
-                }
-                resolve(byteArray);
-                Module.ccall('loadProgram', byteArray);
-                printInstructions();
-                printRegisters();
-                printMemoryView();
-            }
-        }
-        catch (e) {
-            console.log("ayo you errored nerd")
-            reject(e);
-        }
-    })
+    // Do something
 }
 
 function printRegisters() {
@@ -90,6 +59,7 @@ async function playInstructions() {
         console.log(this.executeOneInstruction());
         await delay(delayTime);
         console.log(delayTime);
+        console.log(Module.ccall('getInstructionStream', 0));
     }
 }
 
@@ -103,7 +73,7 @@ function changeDelay() {
 
 function initSim() {
     Module.onRuntimeInitialized = () => {
-        setMemorySize(4000);
+        setMemorySize(4096);
         printInstructions();
         printMemoryView();
         printRegisters();
