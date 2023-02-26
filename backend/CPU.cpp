@@ -183,21 +183,20 @@ void CPU::alu_i(IInstruction i) {
 }
 
 void CPU::load(IInstruction i) {
+	uint32_t addr = registers[i.rs1]() + i.uimm();
 	switch (i.funct3) {
 		case 0x0: {
-			uint32_t byte = memory[ registers[i.rs1]() + i.imm() ];
+			uint32_t byte = memory[addr];
 			byte = SIGN_EXTEND_32BIT(8, byte);
 			registers[i.rd].set(byte); // LB
 			break;
 		} case 0x1: {
-			uint32_t addr = registers[i.rs1]() + i.imm();
 			uint32_t half = memory[addr+1];
 			half = (half << 8) | memory[addr];
 			half = SIGN_EXTEND_32BIT(16, half);
 			registers[i.rd].set(half); // LH
 			break;
 		} case 0x2: {
-			uint32_t addr = registers[i.rs1]() + i.imm();
 			uint32_t word = memory[addr+3];
 			word = (word << 8) | memory[addr+2];
 			word = (word << 8) | memory[addr+1];
@@ -205,11 +204,10 @@ void CPU::load(IInstruction i) {
 			registers[i.rd].set(word); // LW
 			break;
 		} case 0x4: {
-			uint32_t byte = memory[ registers[i.rs1]() + i.imm() ];
+			uint32_t byte = memory[addr];
 			registers[i.rd].set(byte); // LBU
 			break;
 		} case 0x5: {
-			uint32_t addr = registers[i.rs1]() + i.imm();
 			uint32_t half = memory[addr+1];
 			half = (half << 8) | memory[addr];
 			registers[i.rd].set(half); // LHU
@@ -219,7 +217,7 @@ void CPU::load(IInstruction i) {
 }
 
 void CPU::store(SInstruction i) {
-	uint32_t addr = registers[i.rs1]() + i.imm();
+	uint32_t addr = registers[i.rs1]() + i.uimm();
 	switch(i.funct3) {
 		case 0x0: {
 			uint8_t byte = (uint8_t)registers[i.rs2]();
@@ -228,7 +226,6 @@ void CPU::store(SInstruction i) {
 				snprintf(&err[0], 256, "Instruction store byte failed: invalid address: %x", addr);
 				throw runtime_error(&err[0]);
 			}
-			memory[addr] = (uint8_t)wor
 			memory[addr] = byte; // SB
 			break;
 		} case 0x1: {
@@ -238,7 +235,6 @@ void CPU::store(SInstruction i) {
 				snprintf(&err[0], 256, "Instruction store half failed: invalid address: %x", addr);
 				throw runtime_error(&err[0]);
 			}
-			memory[addr] = (uint8_t)wor
 			memory[addr] = (uint8_t)half;
 			memory[addr+1] = (uint8_t)(half >> 8); // SH
 			break;
@@ -262,50 +258,50 @@ void CPU::branch(BInstruction i) {
 	switch(i.funct3) {
 		case 0x0:
 			if (registers[i.rs1]() == registers[i.rs2]()) // BEQ
-				pc.set(pc() + i.imm());
+				pc.set(pc() + i.uimm());
 			break;
 		case 0x1:
 			if (registers[i.rs1]() != registers[i.rs2]()) // BNE
-				pc.set(pc() + i.imm());
+				pc.set(pc() + i.uimm());
 			break;
 		case 0x4:
 			if ((int32_t)registers[i.rs1]() < (int32_t)registers[i.rs2]()) // BLT
-				pc.set(pc() + i.imm());
+				pc.set(pc() + i.uimm());
 			break;
 		case 0x5:
 			if ((int32_t)registers[i.rs1]() >= (int32_t)registers[i.rs2]()) // BGE
-				pc.set(pc() + i.imm());
+				pc.set(pc() + i.uimm());
 			break;
 		case 0x6:
 			if (registers[i.rs1]() < registers[i.rs2]()) // BLTU
-				pc.set(pc() + i.imm());
+				pc.set(pc() + i.uimm());
 			break;
 		case 0x7:
 			if (registers[i.rs1]() >= registers[i.rs2]()) // BGEU
-				pc.set(pc() + i.imm());
+				pc.set(pc() + i.uimm());
 			break;
 	}
 }
 
 void CPU::jump_link(JInstruction i) {
 	registers[i.rd].set(pc());
-	pc.set(pc() + i.imm());
+	pc.set(pc() + i.uimm());
 }
 
 void CPU::jump_link_reg(IInstruction i) {
 	registers[i.rd].set(pc());
-	pc.set(registers[i.rs1]() + i.imm());
+	pc.set(registers[i.rs1]() + i.uimm());
 }
 
 void CPU::load_upper(UInstruction i) {
-	uint32_t upper = i.imm() << 12;
+	uint32_t upper = i.uimm() << 12;
 	uint32_t mask = 0x0000FFFF;
 	uint32_t val = (registers[i.rd]() & mask) | upper;
 	registers[i.rd].set(val);
 }
 
 void CPU::add_upper(UInstruction i) {
-	uint32_t val = i.imm() << 12;
+	uint32_t val = i.uimm() << 12;
 	val += pc();
 	registers[i.rd].set(val);
 }
