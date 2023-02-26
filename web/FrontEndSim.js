@@ -3,14 +3,13 @@ var instructionCounter;
 var delayTime = 10;
 
 function uploadFile() {
-    fileExtension = document.getElementById("fileUpload").value.split('.').pop();
-    if (fileExtension != 'png') {
-        window.alert("Please enter an object file.");
-        return null;
-    }
+    file = document.getElementById("fileUpload").files[0];
+    console.log(file);
+    parseFile(file);
 }
 
 function parseFile(file) {
+    console.log("Uploading: " + toString(file))
     return new Promise((resolve, reject) => {
         try {
             var reader = new FileReader();
@@ -25,9 +24,14 @@ function parseFile(file) {
                     }
                 }
                 resolve(byteArray);
+                Module.ccall('loadProgram', byteArray);
+                printInstructions();
+                printRegisters();
+                printMemoryView();
             }
         }
         catch (e) {
+            console.log("ayo you errored nerd")
             reject(e);
         }
     })
