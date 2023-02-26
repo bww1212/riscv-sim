@@ -1,6 +1,7 @@
 var byteArrayFromObject;
 var instructionCounter;
 var delayTime = 10;
+var memorySize = 4096;
 
 function uploadFile() {
     let fileThing = document.getElementById('fileUpload');
@@ -8,14 +9,23 @@ function uploadFile() {
         console.log("no file")
         return
     }
-    console.log(fileThing.files[0])
+    // console.log(fileThing.files[0])
     let reader = new FileReader();
     reader.onload = function fileReadCompleated() {
         // when its done reading, reader.result will have what you want
-        console.log(reader.result)
+        // console.log(reader.result)
+        let size = reader.result.byteLength;
+        let array = reader.result;
+        if (size > memorySize) {
+            size = memorySize;
+            array = reader.result.slice(0, size);
+        }
+        console.log([array, size])
+        Module.ccall('loadProgram', 'boolean', ['Uint8Array', 'number'], [array, size]);
+        printMemoryView();
+        printRegisters();
     }
     reader.readAsArrayBuffer(fileThing.files[0])
-    Module.ccall('loadProgram', 'string', 'byte[]', reader.result);
 }
 
 function printRegisters() {
@@ -23,7 +33,6 @@ function printRegisters() {
     for (i = 0; i < 32; i++) {
         // Print register i in a 4x8 grid
     }
-    console.log(result);
     document.getElementById('registers').textContent = result;
 }
 
@@ -32,14 +41,12 @@ function printInstructions() {
     // Call with an offset
     // If calling with 0, that will give the instruction being called, 1 will be the one after that and so on
     result = Module.ccall('getInstructionStream', 'string', 'int', '0');
-    console.log(result);
     document.getElementById('instructions').value = result;
 }
 
 function printMemoryView() {
     // Print view of memory in a scroll box
     result = Module.ccall('getMemory', 'string')
-    console.log(result);
     document.getElementById('memory').textContent = result;
 }
 
@@ -51,7 +58,7 @@ function setMemorySize(sizeInBytes) {
 function executeOneInstruction() {
     // Call method to run one instruction
     Module.ccall('execute');
-    printInstructions();
+    // printInstructions();
     printMemoryView();
     printRegisters();
 }
@@ -71,10 +78,9 @@ function delay(milliseconds) {
 async function playInstructions() {
     value = true;
     while (value) {
-        console.log(this.executeOneInstruction());
+        this.executeOneInstruction();
         await delay(delayTime);
-        console.log(delayTime);
-        console.log(Module.ccall('getInstructionStream', 0));
+        Module.ccall('getInstructionStream', 0);
     }
 }
 
@@ -88,7 +94,7 @@ function changeDelay() {
 
 function initSim() {
     Module.onRuntimeInitialized = () => {
-        setMemorySize(4096);
+        setMemorySize(memorySize);
         // printInstructions();
         printMemoryView();
         printRegisters();
