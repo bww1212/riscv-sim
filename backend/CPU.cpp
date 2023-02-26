@@ -98,7 +98,9 @@ uint32_t CPU::executeInstruction() {
 			environ(instr.i);
 			break;
 		default:
-			throw runtime_error("Invalid instruction");
+			char err[256];
+			snprintf(&err[0], 256, "Invalid opcode: %x", instr.opcode);
+			throw runtime_error(&err[0]);
 	}
     return pc();
 }
@@ -221,21 +223,32 @@ void CPU::store(SInstruction i) {
 	switch(i.funct3) {
 		case 0x0: {
 			uint8_t byte = (uint8_t)registers[i.rs2]();
-			if (addr >= MEMSIZE)
-				throw runtime_error("Instruction store byte failed: invalid address");
+			if (addr >= MEMSIZE) {
+				char err[256];
+				snprintf(&err[0], 256, "Instruction store byte failed: invalid address: %x", addr);
+				throw runtime_error(&err[0]);
+			}
+			memory[addr] = (uint8_t)wor
 			memory[addr] = byte; // SB
 			break;
 		} case 0x1: {
 			uint16_t half = (uint16_t)registers[i.rs2]();
-			if (addr >= MEMSIZE - 1)
-				throw runtime_error("Instruction store half failed: invalid address");
+			if (addr >= MEMSIZE - 1) {
+				char err[256];
+				snprintf(&err[0], 256, "Instruction store half failed: invalid address: %x", addr);
+				throw runtime_error(&err[0]);
+			}
+			memory[addr] = (uint8_t)wor
 			memory[addr] = (uint8_t)half;
 			memory[addr+1] = (uint8_t)(half >> 8); // SH
 			break;
 		} case 0x2: {
 			uint32_t word = registers[i.rs2]();
-			if (addr >= MEMSIZE - 3)
-				throw runtime_error("Instruction store word failed: invalid address");
+			if (addr >= MEMSIZE - 3) {
+				char err[256];
+				snprintf(&err[0], 256, "Instruction store word failed: invalid address: %x", addr);
+				throw runtime_error(&err[0]);
+			}
 			memory[addr] = (uint8_t)word;
 			memory[addr+1] = (uint8_t)(word >>= 8);
 			memory[addr+2] = (uint8_t)(word >>= 8);
