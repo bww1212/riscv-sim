@@ -227,18 +227,18 @@ void CPU::branch(BInstruction i) {
 }
 
 void CPU::jump_link(JInstruction i) {
-	rd.set(pc() + 4);
+	registers[i.rd].set(pc() + 4);
 	pc.set(pc() + i.imm());
 }
 
 void CPU::jump_link_reg(IInstruction i) {
-	rd.set(pc() + 4);
+	registers[i.rd].set(pc() + 4);
 	pc.set(registers[i.rs1]() + i.imm());
 }
 
 void CPU::load_upper(UInstruction i) {
 	uint32_t upper = i.imm() << 12;
-	uint32_t mask = 0x0000FFFF
+	uint32_t mask = 0x0000FFFF;
 	uint32_t val = (registers[i.rd]() & mask) | upper;
 	registers[i.rd].set(val);
 }
