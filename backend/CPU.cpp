@@ -5,7 +5,7 @@
 
 using namespace std;
 
-CPU::CPU() : zero(registers[0]), ra(registers[1]), sp(registers[2]), gp(registers[3]),
+CPU::CPU() : pc(32), zero(registers[0]), ra(registers[1]), sp(registers[2]), gp(registers[3]),
     tp(registers[4]), t0(registers[5]), t1(registers[6]), t2(registers[7]), s0(registers[8]),
     fp(registers[8]), s1(registers[9]), a0(registers[10]), a1(registers[11]), a2(registers[12]),
     a3(registers[13]), a4(registers[14]), a5(registers[15]), a6(registers[16]), a7(registers[17]),
@@ -35,9 +35,14 @@ uint32_t CPU::registerContents(uint8_t index) {
 	return registers[index]();
 }
 
+uint32_t CPU::pcContents() {
+	return pc();
+}
+
 void CPU::reset() {
     for (int i = 0; i < 32; i++)
         registers[i] = Register(32);
+    pc = Register(32);
     memset(memory, 0, MEMSIZE);
 }
 
@@ -53,11 +58,12 @@ uint32_t CPU::executeInstruction() {
 void CPU::alu_r(RInstruction i) {
 	switch (i.funct3) {
 		case 0x0:
-			if (i.funct7 == 0) {
+			if (i.funct7 == 0)
 				registers[i.rd].set(registers[i.rs1]() + registers[i.rs2]()); // ADD
-			} else {
+			else if (i.funct7 == 0x20)
 				registers[i.rd].set(registers[i.rs1]() - registers[i.rs2]()); // SUB
-			}
+			else
+				throw runtime_error("Instruction (ADD/SUB) has invalid funct7");
 			break;
 		case 0x4:
 			registers[i.rd].set(registers[i.rs1]() ^ registers[i.rs2]()); // XOR
@@ -74,8 +80,10 @@ void CPU::alu_r(RInstruction i) {
 		case 0x5:
 			if (i.funct7 == 0)
 				registers[i.rd].set( ((uint32_t)registers[i.rs1]()) >> registers[i.rs2]()); // SRL
-			else
+			else if (i.funct7 == 0x20)
 				registers[i.rd].set( (( int32_t)registers[i.rs1]()) >> registers[i.rs2]() ); // SRA
+			else
+				throw runtime_error("Instruction (SRL/SRA) has invalid funct7");
 			break;
 		case 0x2:
 			registers[i.rd].set( (( int32_t)registers[i.rs1]()) < (( int32_t)registers[i.rs2]()) ); // SLT
@@ -83,6 +91,8 @@ void CPU::alu_r(RInstruction i) {
 		case 0x3:
 			registers[i.rd].set( ((uint32_t)registers[i.rs1]()) < ((uint32_t)registers[i.rs2]()) ); // SLTU
 			break;
+		default:
+			throw runtime_error("Instruction (register-register ALU) has invalid funct3");
 	}
 }
 
@@ -106,8 +116,10 @@ void CPU::alu_i(IInstruction i) {
 		case 0x5:
 			if (i.imm11_5() == 0)
 				registers[i.rd].set( ((uint32_t)registers[i.rs1]()) >> i.imm4_0()); // SRLI
-			else
+			else if (i.imm11_5() == 0x20)
 				registers[i.rd].set( (( int32_t)registers[i.rs1]()) >> i.imm4_0()); // SRAI
+			else
+				throw runtime_error("Instruction (SRLI/SRAI) has invalid funct7");
 			break;
 		case 0x2:
 			registers[i.rd].set( (( int32_t)registers[i.rs1]()) < i.imm()); // SLTI
@@ -115,6 +127,8 @@ void CPU::alu_i(IInstruction i) {
 		case 0x3:
 			registers[i.rd].set( ((uint32_t)registers[i.rs1]()) < i.imm()); // SLTIU
 			break;
+		default:
+			throw runtime_error("Instruction (register-immediate ALU) has invalid funct3");
 	}
 }
 
@@ -168,7 +182,7 @@ void CPU::store(SInstruction i) {
 			if (addr >= MEMSIZE - 1)
 				throw runtime_error("Instruction store half failed: invalid address");
 			memory[addr] = (uint8_t)half;
-			memory[addr+1] = (uint8_t)(half >> 8);
+			memory[addr+1] = (uint8_t)(half >> 8); // SH
 			break;
 		} case 0x2: {
 			uint32_t word = registers[i.rs2]();
@@ -177,8 +191,37 @@ void CPU::store(SInstruction i) {
 			memory[addr] = (uint8_t)word;
 			memory[addr+1] = (uint8_t)(word >>= 8);
 			memory[addr+2] = (uint8_t)(word >>= 8);
-			memory[addr+3] = (uint8_t)(word >> 8);
+			memory[addr+3] = (uint8_t)(word >> 8); // SW
 			break;
 		}
+	}
+}
+
+void CPU::branch(BInstruction i) {
+	switch(i.funct3) {
+		case 0x0:
+			if (registers[i.rs1]() == registers[i.rs2]()) // BEQ
+				pc.set(pc() + i.imm());
+			break;
+		case 0x1:
+			if (registers[i.rs1]() != registers[i.rs2]()) // BNE
+				pc.set(pc() + i.imm());
+			break;
+		case 0x4:
+			if ((int32_t)registers[i.rs1]() < (int32_t)registers[i.rs2]()) // BLT
+				pc.set(pc() + i.imm());
+			break;
+		case 0x5:
+			if ((int32_t)registers[i.rs1]() >= (int32_t)registers[i.rs2]()) // BGE
+				pc.set(pc() + i.imm());
+			break;
+		case 0x6:
+			if (registers[i.rs1]() < registers[i.rs2]()) // BLTU
+				pc.set(pc() + i.imm());
+			break;
+		case 0x7:
+			if (registers[i.rs1]() >= registers[i.rs2]()) // BGEU
+				pc.set(pc() + i.imm());
+			break;
 	}
 }
