@@ -65,11 +65,18 @@ function executeTenInstructions() {
     }
 }
 
-function playInstructions() {
+function delay(milliseconds) {
+    return new Promise(resolve => {
+        setTimeout(() => {resolve('')}, milliseconds);
+    })
+}
+
+async function playInstructions() {
     value = true;
     while (value) {
         this.executeOneInstruction()
-        delay(delayTime);
+        await delay(delayTime);
+        console.log("timeout");
     }
 }
 
