@@ -86,9 +86,10 @@ function executeOneInstruction() {
     printRegisters();
 }
 
-function executeTenInstructions() {
+async function executeTenInstructions() {
     for (i = 0; i < 10; i++) {
         this.executeOneInstruction()
+        await delay(30);
     }
 }
 
@@ -103,7 +104,7 @@ async function playInstructions() {
     while (value) {
         this.executeOneInstruction();
         await delay(delayTime);
-        Module.ccall('getInstructionStream', 0);
+        // Module.ccall('getInstructionStream', 0);
     }
 }
 
