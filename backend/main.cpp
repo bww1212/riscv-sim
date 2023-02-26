@@ -1,7 +1,6 @@
 #include "Includes.hpp"
-#include "Api.hpp"
+#include "CPU.hpp"
 #include <fstream>
-#include <sstream>
 #include <iostream>
 using namespace std;
 
@@ -24,6 +23,12 @@ static void testRegister() {
 	return 0;
 }*/
 
+static std::string numToHex(uint digits, uint32_t value) {
+    std::ostringstream out;
+    out << std::hex << std::setw(digits) << std::setfill('0') << std::uppercase << value;
+    return out.str();
+}
+
 static void runProgram(int argc, char** argv) {
 	// Load the file
 	if (argc != 2)
@@ -39,12 +44,22 @@ static void runProgram(int argc, char** argv) {
 	uint8_t* bytes = (uint8_t*)str.c_str();
 	const int len = str.length();
 	// Start execution
-	loadProgram(bytes, len);
-	printf("Program loaded.\nMain memory:\n%s", getMemory());
+	CPU cpu;
+	cpu.loadProgram(bytes, len);
+	//printf("Program loaded.\nMain memory:\n%s", getMemory());
 	printf("Press enter to execute instructions.\n");
+	int i = 1;
 	while (getchar()) {
-		execute();
-		printf("%s", getRegisters());
+		printf("Executing instruction %d...\n", i);
+		cpu.executeInstruction();
+		std::string registers;
+    	for (int i = 0; i < 32; i++) {
+			registers += CPU::registerName(i) + ":" + 
+				numToHex(8, cpu.registerContents(i)) + "\n";
+        }
+        registers += std::string("PC:") + numToHex(8, cpu.pcContents()) + "\n";
+		printf("Registers: %s\n", registers.c_str());
+		++i;
 	}
 }
 

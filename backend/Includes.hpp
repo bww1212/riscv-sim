@@ -5,6 +5,9 @@
 #include <stdlib.h>
 #include <stdexcept>
 #include <stdio.h>
+#include <sstream>
+#include <string>
+#include <iomanip>
 
 typedef unsigned int uint;
 
