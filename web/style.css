@@ -13,7 +13,7 @@ button {
 
 .wrapper {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
 }
 .controlButton {
     background-color: rgb(226, 226, 226);
@@ -50,11 +50,7 @@ button {
     position: absolute;
     left: 5px;
     top: 5px;
-}
-#asmView {
-    position: absolute;
-    right: 5px;
-    top: 5px;
+    height: 65%
 }
 #settingsAndButtons {
     position: absolute;
@@ -64,7 +60,8 @@ button {
 #memoryView {
     position:absolute;
     right: 5px;
-    bottom: 5px;
+    top: 5px;
+    height: 90%
 }
 
 #uploadButton {

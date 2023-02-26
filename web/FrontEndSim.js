@@ -15,11 +15,11 @@ function uploadFile() {
         console.log(reader.result)
     }
     reader.readAsArrayBuffer(fileThing.files[0])
-    Module.ccall('loadProgram', reader.result);
+    Module.ccall('loadProgram', 'string', 'byte[]', reader.result);
 }
 
 function printRegisters() {
-    result = Module.ccall('getRegisters')
+    result = Module.ccall('getRegisters', 'string')
     for (i = 0; i < 32; i++) {
         // Print register i in a 4x8 grid
     }
@@ -31,14 +31,14 @@ function printInstructions() {
     // Print the instruction list
     // Call with an offset
     // If calling with 0, that will give the instruction being called, 1 will be the one after that and so on
-    result = Module.ccall('getInstructionStream', '0');
+    result = Module.ccall('getInstructionStream', 'string', 'int', '0');
     console.log(result);
     document.getElementById('instructions').value = result;
 }
 
 function printMemoryView() {
     // Print view of memory in a scroll box
-    result = Module.ccall('getMemory')
+    result = Module.ccall('getMemory', 'string')
     console.log(result);
     document.getElementById('memory').value = result;
 }
@@ -50,7 +50,10 @@ function setMemorySize(sizeInBytes) {
 
 function executeOneInstruction() {
     // Call method to run one instruction
-    Module.cwrap('getInstructionStream', '0');
+    Module.ccall('execute');
+    printInstructions();
+    printMemoryView();
+    printRegisters();
 }
 
 function executeTenInstructions() {
