@@ -205,7 +205,7 @@ void CPU::alu_i(IInstruction i) {
 }
 
 void CPU::load(IInstruction i) {
-	uint32_t addr = registers[i.rs1]() + i.uimm();
+	uint32_t addr = registers[i.rs1]() + i.imm();
 	switch (i.funct3) {
 		case 0x0: {
 			uint32_t byte = memory[addr];
@@ -281,50 +281,50 @@ void CPU::branch(BInstruction i) {
 	switch(i.funct3) {
 		case 0x0:
 			if (registers[i.rs1]() == registers[i.rs2]()) // BEQ
-				pc.set(pc() + i.uimm());
+				pc.set(pc() + i.imm());
 			break;
 		case 0x1:
 			if (registers[i.rs1]() != registers[i.rs2]()) // BNE
-				pc.set(pc() + i.uimm());
+				pc.set(pc() + i.imm());
 			break;
 		case 0x4:
 			if ((int32_t)registers[i.rs1]() < (int32_t)registers[i.rs2]()) // BLT
-				pc.set(pc() + i.uimm());
+				pc.set(pc() + i.imm());
 			break;
 		case 0x5:
 			if ((int32_t)registers[i.rs1]() >= (int32_t)registers[i.rs2]()) // BGE
-				pc.set(pc() + i.uimm());
+				pc.set(pc() + i.imm());
 			break;
 		case 0x6:
 			if (registers[i.rs1]() < registers[i.rs2]()) // BLTU
-				pc.set(pc() + i.uimm());
+				pc.set(pc() + i.imm());
 			break;
 		case 0x7:
 			if (registers[i.rs1]() >= registers[i.rs2]()) // BGEU
-				pc.set(pc() + i.uimm());
+				pc.set(pc() + i.imm());
 			break;
 	}
 }
 
 void CPU::jump_link(JInstruction i) {
 	registers[i.rd].set(pc());
-	pc.set(pc() + i.uimm());
+	pc.set(pc() + i.imm());
 }
 
 void CPU::jump_link_reg(IInstruction i) {
 	registers[i.rd].set(pc());
-	pc.set(registers[i.rs1]() + i.uimm());
+	pc.set(registers[i.rs1]() + i.imm());
 }
 
 void CPU::load_upper(UInstruction i) {
-	uint32_t upper = i.uimm() << 12;
+	uint32_t upper = i.imm() << 12;
 	uint32_t mask = 0x0000FFFF;
 	uint32_t val = (registers[i.rd]() & mask) | upper;
 	registers[i.rd].set(val);
 }
 
 void CPU::add_upper(UInstruction i) {
-	uint32_t val = i.uimm() << 12;
+	uint32_t val = i.imm() << 12;
 	val += pc();
 	registers[i.rd].set(val);
 }

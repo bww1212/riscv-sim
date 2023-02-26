@@ -82,6 +82,9 @@ typedef struct UInstruction {
     inline uint32_t uimm() {
         return imm31_12 << 12;
     }
+    inline int32_t imm() {
+    	return imm31_12 << 12;
+    }
 } UInstruction;
 
 typedef struct JInstruction {
