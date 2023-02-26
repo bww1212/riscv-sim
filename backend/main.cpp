@@ -1,5 +1,6 @@
 #include "Includes.hpp"
 #include "CPU.hpp"
+#include "Instruction.hpp"
 #include <fstream>
 #include <iostream>
 using namespace std;
@@ -50,7 +51,7 @@ static void runProgram(int argc, char** argv) {
 	printf("Press enter to execute instructions.\n");
 	int i = 1;
 	while (getchar()) {
-		printf("Executing instruction %d...\n", i);
+		printf("Executing instruction %d: %s...\n", i, cpu.instruction().c_str());
 		cpu.executeInstruction();
 		std::string registers;
     	for (int i = 0; i < 32; i++) {

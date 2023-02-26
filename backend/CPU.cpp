@@ -46,10 +46,15 @@ uint32_t CPU::pcContents() {
 	return pc();
 }
 
+string CPU::instruction() {
+	return instructionString(*(uint32_t*)(memory + pc()));
+}
+
 void CPU::reset() {
     for (int i = 0; i < 32; i++)
         registers[i] = Register(32);
     pc = Register(32);
+    sp.set(MEMSIZE);
     memset(memory, 0, MEMSIZE);
 }
 
@@ -106,6 +111,7 @@ uint32_t CPU::executeInstruction() {
 }
 
 void CPU::alu_r(RInstruction i) {
+	char err[256];
 	switch (i.funct3) {
 		case 0x0:
 			if (i.funct7 == 0)
@@ -113,7 +119,6 @@ void CPU::alu_r(RInstruction i) {
 			else if (i.funct7 == 0x20)
 				registers[i.rd].set(registers[i.rs1]() - registers[i.rs2]()); // SUB
 			else
-				char err[256];
 				snprintf(&err[0], 256, "Instruction (ADD/SUB) has invalid funct7: %x",
 					i.funct7);
 				throw runtime_error(&err[0]);
@@ -136,7 +141,6 @@ void CPU::alu_r(RInstruction i) {
 			else if (i.funct7 == 0x20)
 				registers[i.rd].set( (( int32_t)registers[i.rs1]()) >> registers[i.rs2]() ); // SRA
 			else
-				char err[256];
 				snprintf(&err[0], 256, "Instruction (SRL/SRA) has invalid funct7: %x",
 					i.funct7);
 				throw runtime_error(&err[0]);
@@ -148,7 +152,6 @@ void CPU::alu_r(RInstruction i) {
 			registers[i.rd].set( ((uint32_t)registers[i.rs1]()) < ((uint32_t)registers[i.rs2]()) ); // SLTU
 			break;
 		default:
-			char err[256];
 			snprintf(&err[0], 256, "Instruction (register-register ALU) has invalid funct3: %x",
 				i.funct3);
 			throw runtime_error(&err[0]);
@@ -156,6 +159,7 @@ void CPU::alu_r(RInstruction i) {
 }
 
 void CPU::alu_i(IInstruction i) {
+	char err[256];
 	switch (i.funct3) {
 		case 0x0:
 			registers[i.rd].set(registers[i.rs1]() + i.imm()); // ADDI
@@ -178,7 +182,6 @@ void CPU::alu_i(IInstruction i) {
 			else if (i.imm11_5() == 0x20)
 				registers[i.rd].set( (( int32_t)registers[i.rs1]()) >> i.imm4_0()); // SRAI
 			else
-				char err[256];
 				snprintf(&err[0], 256, "Instruction (SRLI/SRAI) has invalid funct7: %x",
 					i.imm11_5());
 				throw runtime_error(&err[0]);
@@ -190,7 +193,6 @@ void CPU::alu_i(IInstruction i) {
 			registers[i.rd].set( ((uint32_t)registers[i.rs1]()) < i.imm()); // SLTIU
 			break;
 		default:
-			char err[256];
 			snprintf(&err[0], 256, "Instruction (register-immediate ALU) has invalid funct3: %x",
 				i.funct3);
 			throw runtime_error(&err[0]);
@@ -232,14 +234,14 @@ void CPU::load(IInstruction i) {
 }
 
 void CPU::store(SInstruction i) {
-	uint32_t addr = registers[i.rs1]() + i.uimm();
+	uint32_t addr = registers[i.rs1]() + i.imm();
+	char err[256];
 	switch(i.funct3) {
 		case 0x0: {
 			uint8_t byte = (uint8_t)registers[i.rs2]();
 			if (addr >= MEMSIZE) {
-				char err[256];
 				snprintf(&err[0], 256, "Instruction store byte failed: invalid address: %x",
-					registers[i.rs1](), i.uimm(), addr);
+					registers[i.rs1](), i.imm(), addr);
 				throw runtime_error(&err[0]);
 			}
 			memory[addr] = byte; // SB
@@ -247,9 +249,8 @@ void CPU::store(SInstruction i) {
 		} case 0x1: {
 			uint16_t half = (uint16_t)registers[i.rs2]();
 			if (addr >= MEMSIZE - 1) {
-				char err[256];
 				snprintf(&err[0], 256, "Instruction store half failed: invalid address: %x+%x=%x",
-					registers[i.rs1](), i.uimm(), addr);
+					registers[i.rs1](), i.imm(), addr);
 				throw runtime_error(&err[0]);
 			}
 			memory[addr] = (uint8_t)half;
@@ -258,9 +259,8 @@ void CPU::store(SInstruction i) {
 		} case 0x2: {
 			uint32_t word = registers[i.rs2]();
 			if (addr >= MEMSIZE - 3) {
-				char err[256];
 				snprintf(&err[0], 256, "Instruction store word failed: invalid address: %x+%x=%x",
-					registers[i.rs1](), i.uimm(), addr);
+					registers[i.rs1](), i.imm(), addr);
 				throw runtime_error(&err[0]);
 			}
 			memory[addr] = (uint8_t)word;

@@ -20,6 +20,7 @@ class CPU {
         uint32_t wordAtMemory(uint16_t address);
         uint32_t registerContents(uint8_t index);
         uint32_t pcContents();
+       	std::string instruction();
         uint16_t programBytes();
         static std::string registerName(uint8_t index, bool numeric = false);
     private:
