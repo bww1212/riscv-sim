@@ -50,7 +50,7 @@ button {
     position: absolute;
     left: 5px;
     top: 5px;
-    height: 65%
+    height: max-content;
 }
 #settingsAndButtons {
     position: absolute;
@@ -61,7 +61,8 @@ button {
     position:absolute;
     right: 5px;
     top: 5px;
-    height: 90%
+    height: fit-content;
+    box-sizing: border-box;
 }
 
 #uploadButton {
@@ -87,4 +88,10 @@ button {
 
 #settings {
     padding: 10px;
+}
+
+#memory {
+    overflow: scroll;
+    max-height: 625px;
+    box-sizing: border-box;
 }

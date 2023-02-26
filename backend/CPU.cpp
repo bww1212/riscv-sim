@@ -270,12 +270,12 @@ void CPU::branch(BInstruction i) {
 }
 
 void CPU::jump_link(JInstruction i) {
-	registers[i.rd].set(pc() + 4);
+	registers[i.rd].set(pc());
 	pc.set(pc() + i.imm());
 }
 
 void CPU::jump_link_reg(IInstruction i) {
-	registers[i.rd].set(pc() + 4);
+	registers[i.rd].set(pc());
 	pc.set(registers[i.rs1]() + i.imm());
 }
 
