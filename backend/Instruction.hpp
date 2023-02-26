@@ -3,6 +3,17 @@
 
 #include "Includes.hpp"
 
+#define OP_ALU_R 0b0110011
+#define OP_ALU_I 0b0010011
+#define OP_LOAD 0b0000011
+#define OP_STORE 0b0100011
+#define OP_BRANCH 0b1100011
+#define OP_JUMP_LINK 0b1101111
+#define OP_JUMP_LINK_REG 0b1100111
+#define OP_LOAD_UPPER 0b0110111
+#define OP_ADD_UPPER 0b0010111
+#define OP_ENV 0b1110011
+
 typedef struct RInstruction {
     uint opcode: 7;
     uint rd: 5;
@@ -79,6 +90,9 @@ typedef struct JInstruction {
 } JInstruction;
 
 typedef union Instruction {
+    Instruction(uint32_t bits) : raw(bits) {}
+    uint32_t raw;
+    uint opcode: 7;
 	RInstruction r;
 	IInstruction i;
 	SInstruction s;

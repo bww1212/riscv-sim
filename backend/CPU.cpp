@@ -52,6 +52,42 @@ void CPU::loadProgram(uint8_t* bytes, uint size) {
 }
 
 uint32_t CPU::executeInstruction() {
+	Instruction instr(wordAtMemory(pc()));
+	pc.set(pc() + 4);
+	switch (instr.opcode) {
+		case OP_ALU_R:
+			alu_r(instr.r);
+			break;
+		case OP_ALU_I:
+			alu_i(instr.i);
+			break;
+		case OP_LOAD:
+			load(instr.i);
+			break;
+		case OP_STORE:
+			store(instr.s);
+			break;
+		case OP_BRANCH:
+			branch(instr.b);
+			break;
+		case OP_JUMP_LINK:
+			jump_link(instr.j);
+			break;
+		case OP_JUMP_LINK_REG:
+			jump_link_reg(instr.i);
+			break;
+		case OP_LOAD_UPPER:
+			load_upper(instr.u);
+			break;
+		case OP_ADD_UPPER:
+			add_upper(instr.u);
+			break;
+		case OP_ENV:
+			environ(instr.i);
+			break;
+		default:
+			throw runtime_error("Invalid instruction");
+	}
     return pc();
 }
 
