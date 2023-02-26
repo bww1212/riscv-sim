@@ -63,8 +63,8 @@ button {
     top: 5px;
     height: fit-content;
     box-sizing: border-box;
-    max-width: 47%;
-    min-width: 47%;
+    max-width: 48%;
+    min-width: 48%;
 }
 #instructionView {
     position: absolute;
@@ -98,6 +98,7 @@ button {
 }
 
 #memory {
+    overflow: scroll;
     max-height: 625px;
     box-sizing: border-box;
 }

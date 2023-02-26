@@ -1,7 +1,7 @@
 var byteArrayFromObject;
 var instructionCounter;
 var delayTime = 100;
-var memorySize = 512;
+var memorySize = 1024;
 var instructions;
 
 function uploadFile() {
@@ -22,7 +22,7 @@ function uploadFile() {
             array = reader.result.slice(0, size);
         }
         array = new Int8Array(array);
-        console.log([array, size])
+        // console.log([array, size])
         for (let i = 0; i < size; i++) {
             let byte = array[i];
             // console.log(byte);
@@ -63,7 +63,7 @@ function hightlightInstruction(index) {
 function printMemoryView() {
     // Print view of memory in a scroll box
     result = Module.ccall('getMemory', 'string')
-    console.log(result);
+    // console.log(result);
     document.getElementById('memory').textContent = result;
 }
 
